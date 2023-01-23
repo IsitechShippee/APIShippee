@@ -44,3 +44,9 @@ G:\Shippee\ShippeeAPI\obj\Debug\net7.0\refint\ShippeeAPI.dll
 G:\Shippee\ShippeeAPI\obj\Debug\net7.0\ShippeeAPI.pdb
 G:\Shippee\ShippeeAPI\obj\Debug\net7.0\ShippeeAPI.genruntimeconfig.cache
 G:\Shippee\ShippeeAPI\obj\Debug\net7.0\ref\ShippeeAPI.dll
+G:\Shippee\ShippeeAPI\bin\Debug\net7.0\Aspose.Cells.dll
+G:\Shippee\ShippeeAPI\bin\Debug\net7.0\SkiaSharp.dll
+G:\Shippee\ShippeeAPI\bin\Debug\net7.0\runtimes\osx\native\libSkiaSharp.dylib
+G:\Shippee\ShippeeAPI\bin\Debug\net7.0\runtimes\win-arm64\native\libSkiaSharp.dll
+G:\Shippee\ShippeeAPI\bin\Debug\net7.0\runtimes\win-x64\native\libSkiaSharp.dll
+G:\Shippee\ShippeeAPI\bin\Debug\net7.0\runtimes\win-x86\native\libSkiaSharp.dll
