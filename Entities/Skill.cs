@@ -11,4 +11,5 @@ public class Skill
     [Column(TypeName = "varchar(255)")]
     public string title { get; set; } =string.Empty;
 
+    public ICollection<User>? User { get; set; } 
 }

@@ -9,14 +9,18 @@ namespace ShippeeAPI.Context
 
         }
 
-        public DbSet<User> Users  { get; set; } 
-        public DbSet<Company> Companies  { get; set; } 
-        public DbSet<Naf_Section> Naf_Sections  { get; set; } 
-        public DbSet<Naf_Division> Naf_Divisions  { get; set; } 
-        public DbSet<Skill> Skills  { get; set; } 
+        public DbSet<User>? Users  { get; set; }
+        public DbSet<Company>? Companies  { get; set; } 
+        public DbSet<Naf_Section>? Naf_Sections  { get; set; } 
+        public DbSet<Naf_Division>? Naf_Divisions  { get; set; } 
+        public DbSet<Skill>? Skills  { get; set; } 
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Skill>()
+                .HasMany(x => x.User)
+                .WithMany(y => y.Skill)
+                .UsingEntity(j => j.ToTable("Student_skills"));
         }
     }
 }

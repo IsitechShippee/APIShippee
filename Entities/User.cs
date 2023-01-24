@@ -38,7 +38,9 @@ public class User
     [Column(TypeName = "varchar(255)")]
     public string city { get; set; } =string.Empty;
 
-    public DateOnly birthday { get; set; }  
+    public DateOnly birthday { get; set; } 
+
+    public ICollection<Skill>? Skill { get; set; } 
 
     public Company? Company { get; set; }
     
