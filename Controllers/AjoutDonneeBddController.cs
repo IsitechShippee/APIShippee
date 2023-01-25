@@ -1,9 +1,8 @@
 
 using ShippeeAPI.Context;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
 using Aspose.Cells;
-using RestSharp;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShippeeAPI.Controllers;
 
@@ -91,7 +90,12 @@ public class AjoutDonneeBddController : ControllerBase
     }
 
     
-    
+    [HttpGet("test")]
+    public async Task<IActionResult> GetTest()
+    {
+        List<User> user = await _context.Users.ToListAsync();
+        return  Ok(user);
+    }
 
     
 }

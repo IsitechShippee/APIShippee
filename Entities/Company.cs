@@ -9,31 +9,31 @@ public class Company
     public Int32 siren { get; set; }
 
     [Column(TypeName = "varchar(255)")]
-    public string name { get; set; } =string.Empty;
+    public string? name { get; set; }
 
     public Naf_Section? Naf_Section { get; set; }
     
     [ForeignKey("Naf_Section")]
-    public Int32 id_naf { get; set; }
+    public Int32? id_naf { get; set; }
 
     [Column(TypeName = "varchar(255)")]
-    public string street { get; set; } =string.Empty;
+    public string? street { get; set; }
     
     [Column(TypeName = "varchar(255)")]
-    public string cp { get; set; } =string.Empty;
+    public string? cp { get; set; }
     
     [Column(TypeName = "varchar(255)")]
-    public string city { get; set; } =string.Empty;
+    public string? city { get; set; }
     
     [Column(TypeName = "varchar(255)")]
-    public string legal_form { get; set; } =string.Empty;
+    public string? legal_form { get; set; }
     
     [Column(TypeName = "varchar(255)")]
-    public string effective { get; set; } =string.Empty;
+    public string? effective { get; set; }
     
     [Column(TypeName = "varchar(255)")]
-    public string web_site { get; set; } =string.Empty; 
+    public string? web_site { get; set; } 
 
-    public bool payment { get; set; }
+    public bool? payment { get; set; }
 
 }

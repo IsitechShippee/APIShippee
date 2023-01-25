@@ -9,7 +9,7 @@ public class Skill
     public Int32 id { get; set; }
 
     [Column(TypeName = "varchar(255)")]
-    public string title { get; set; } =string.Empty;
+    public string? title { get; set; }
 
-    public ICollection<User>? User { get; set; } 
+    public List<Student_skill>? Student_skills { get; set; }
 }

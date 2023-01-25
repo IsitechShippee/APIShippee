@@ -9,6 +9,6 @@ public class Naf_Section
     public Int32 id { get; set; }
 
     [Column(TypeName = "varchar(255)")]
-    public string title { get; set; } =string.Empty;
+    public string? title { get; set; }
 
 }
