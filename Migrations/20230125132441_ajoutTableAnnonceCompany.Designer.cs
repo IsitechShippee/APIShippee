@@ -11,8 +11,8 @@ using ShippeeAPI.Context;
 namespace ShippeeAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230125131221_modifTableAnnonceStudent")]
-    partial class modifTableAnnonceStudent
+    [Migration("20230125132441_ajoutTableAnnonceCompany")]
+    partial class ajoutTableAnnonceCompany
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,41 @@ namespace ShippeeAPI.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("ShippeeAPI.Annoucement_Company", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("description")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("id_job")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("id_naf_division")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("id_recruiter")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("publish_date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("title")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("id_job");
+
+                    b.HasIndex("id_naf_division");
+
+                    b.HasIndex("id_recruiter");
+
+                    b.ToTable("Annoucement_Companies");
+                });
 
             modelBuilder.Entity("ShippeeAPI.Annoucement_Student", b =>
                 {
@@ -228,6 +263,27 @@ namespace ShippeeAPI.Migrations
                     b.HasIndex("id_company");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ShippeeAPI.Annoucement_Company", b =>
+                {
+                    b.HasOne("ShippeeAPI.Job", "Job")
+                        .WithMany()
+                        .HasForeignKey("id_job");
+
+                    b.HasOne("ShippeeAPI.Naf_Division", "Naf_Division")
+                        .WithMany()
+                        .HasForeignKey("id_naf_division");
+
+                    b.HasOne("ShippeeAPI.User", "User")
+                        .WithMany()
+                        .HasForeignKey("id_recruiter");
+
+                    b.Navigation("Job");
+
+                    b.Navigation("Naf_Division");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ShippeeAPI.Annoucement_Student", b =>

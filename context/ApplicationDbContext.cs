@@ -17,6 +17,7 @@ namespace ShippeeAPI.Context
         public DbSet<Student_Skill> Student_skills { get; set; }
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Annoucement_Student> Annoucement_Students { get; set; }
+        public DbSet<Annoucement_Company> Annoucement_Companies { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
