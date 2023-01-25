@@ -15,6 +15,7 @@ namespace ShippeeAPI.Context
         public DbSet<Naf_Division> Naf_Divisions  { get; set; } 
         public DbSet<Skill> Skills  { get; set; } 
         public DbSet<Student_skill> Student_skills { get; set; }
+        public DbSet<Job> Jobs { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

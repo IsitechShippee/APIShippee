@@ -26,7 +26,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Naf_Section")]
     public async Task<IActionResult> GetAjout_Naf_Section()
     {
-        Workbook wb = new Workbook("G:/Shippee/Naf_Section.xls");
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Naf_Section.xls");
 
         WorksheetCollection collection = wb.Worksheets;
         List<Naf_Section> listA = new List<Naf_Section>();
@@ -60,7 +60,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Naf_Division")]
     public async Task<IActionResult> GetAjout_Naf_Division()
     {
-        Workbook wb = new Workbook("G:/Shippee/Naf_Division.xls");
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Naf_Division.xls");
 
         WorksheetCollection collection = wb.Worksheets;
         List<Naf_Division> listA = new List<Naf_Division>();
@@ -87,14 +87,6 @@ public class AjoutDonneeBddController : ControllerBase
         }
 
         return Ok("Les naf_divisons sont bien ajouté");
-    }
-
-    
-    [HttpGet("test")]
-    public async Task<IActionResult> GetTest()
-    {
-        List<User> user = await _context.Users.ToListAsync();
-        return  Ok(user);
     }
 
     
