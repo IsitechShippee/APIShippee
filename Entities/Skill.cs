@@ -11,5 +11,5 @@ public class Skill
     [Column(TypeName = "varchar(255)")]
     public string? title { get; set; }
 
-    public List<Student_skill>? Student_skills { get; set; }
+    public List<Student_Skill>? Student_skills { get; set; }
 }

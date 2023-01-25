@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShippeeAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class ajoutTableJob : Migration
+    public partial class modifTableAnnonceStudent : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -186,6 +186,57 @@ namespace ShippeeAPI.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "Annoucement_Students",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    idstudent = table.Column<int>(name: "id_student", type: "int", nullable: true),
+                    title = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    description = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    publishdate = table.Column<DateTime>(name: "publish_date", type: "datetime(6)", nullable: true),
+                    idjob = table.Column<int>(name: "id_job", type: "int", nullable: true),
+                    idnafdivision = table.Column<int>(name: "id_naf_division", type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Annoucement_Students", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Annoucement_Students_Jobs_id_job",
+                        column: x => x.idjob,
+                        principalTable: "Jobs",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Annoucement_Students_Naf_Divisions_id_naf_division",
+                        column: x => x.idnafdivision,
+                        principalTable: "Naf_Divisions",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Annoucement_Students_Users_id_student",
+                        column: x => x.idstudent,
+                        principalTable: "Users",
+                        principalColumn: "id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Annoucement_Students_id_job",
+                table: "Annoucement_Students",
+                column: "id_job");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Annoucement_Students_id_naf_division",
+                table: "Annoucement_Students",
+                column: "id_naf_division");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Annoucement_Students_id_student",
+                table: "Annoucement_Students",
+                column: "id_student");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_id_naf",
                 table: "Companies",
@@ -216,19 +267,22 @@ namespace ShippeeAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Jobs");
+                name: "Annoucement_Students");
 
             migrationBuilder.DropTable(
                 name: "Student_skills");
 
             migrationBuilder.DropTable(
-                name: "Naf_Divisions");
+                name: "Jobs");
 
             migrationBuilder.DropTable(
                 name: "Skills");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Naf_Divisions");
 
             migrationBuilder.DropTable(
                 name: "Companies");
