@@ -12,4 +12,5 @@ public class Skill
     public string? title { get; set; }
 
     public List<Student_Skill>? Student_skills { get; set; }
+    public List<Qualification>? Qualifications { get; set; }
 }

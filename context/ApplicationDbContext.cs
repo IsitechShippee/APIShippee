@@ -18,11 +18,15 @@ namespace ShippeeAPI.Context
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Annoucement_Student> Annoucement_Students { get; set; }
         public DbSet<Annoucement_Company> Annoucement_Companies { get; set; }
+        public DbSet<Qualification> Qualifications { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student_Skill>()
                 .HasKey(cs => new { cs.Userid, cs.Skillid });
+
+            modelBuilder.Entity<Qualification>()
+                .HasKey(cs => new { cs.Annoucement_Companyid, cs.Skillid });
         }
     }
 }
