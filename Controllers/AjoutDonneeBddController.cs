@@ -2,7 +2,6 @@
 using ShippeeAPI.Context;
 using Microsoft.AspNetCore.Mvc;
 using Aspose.Cells;
-using Microsoft.EntityFrameworkCore;
 
 namespace ShippeeAPI.Controllers;
 

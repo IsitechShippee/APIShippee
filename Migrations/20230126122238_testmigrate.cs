@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShippeeAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class ajoutTableQualification : Migration
+    public partial class testmigrate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -162,24 +162,24 @@ namespace ShippeeAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Student_skills",
+                name: "SkillUser",
                 columns: table => new
                 {
-                    Userid = table.Column<int>(type: "int", nullable: false),
-                    Skillid = table.Column<int>(type: "int", nullable: false)
+                    skillid = table.Column<int>(type: "int", nullable: false),
+                    userid = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Student_skills", x => new { x.Userid, x.Skillid });
+                    table.PrimaryKey("PK_SkillUser", x => new { x.skillid, x.userid });
                     table.ForeignKey(
-                        name: "FK_Student_skills_Skills_Skillid",
-                        column: x => x.Skillid,
+                        name: "FK_SkillUser_Skills_skillid",
+                        column: x => x.skillid,
                         principalTable: "Skills",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Student_skills_Users_Userid",
-                        column: x => x.Userid,
+                        name: "FK_SkillUser_Users_userid",
+                        column: x => x.userid,
                         principalTable: "Users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -334,9 +334,9 @@ namespace ShippeeAPI.Migrations
                 column: "Skillid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Student_skills_Skillid",
-                table: "Student_skills",
-                column: "Skillid");
+                name: "IX_SkillUser_userid",
+                table: "SkillUser",
+                column: "userid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_id_company",
@@ -354,7 +354,7 @@ namespace ShippeeAPI.Migrations
                 name: "Qualifications");
 
             migrationBuilder.DropTable(
-                name: "Student_skills");
+                name: "SkillUser");
 
             migrationBuilder.DropTable(
                 name: "Annoucement_Companies");
