@@ -162,23 +162,23 @@ namespace ShippeeAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "SkillUser",
+                name: "Student_Skills",
                 columns: table => new
                 {
-                    skillid = table.Column<int>(type: "int", nullable: false),
-                    userid = table.Column<int>(type: "int", nullable: false)
+                    userid = table.Column<int>(name: "user_id", type: "int", nullable: false),
+                    skillid = table.Column<int>(name: "skill_id", type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SkillUser", x => new { x.skillid, x.userid });
+                    table.PrimaryKey("PK_Student_Skills", x => new { x.userid, x.skillid });
                     table.ForeignKey(
-                        name: "FK_SkillUser_Skills_skillid",
+                        name: "FK_Student_Skills_Skills_skill_id",
                         column: x => x.skillid,
                         principalTable: "Skills",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SkillUser_Users_userid",
+                        name: "FK_Student_Skills_Users_user_id",
                         column: x => x.userid,
                         principalTable: "Users",
                         principalColumn: "id",
@@ -334,9 +334,9 @@ namespace ShippeeAPI.Migrations
                 column: "Skillid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SkillUser_userid",
-                table: "SkillUser",
-                column: "userid");
+                name: "IX_Student_Skills_skill_id",
+                table: "Student_Skills",
+                column: "skill_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_id_company",
@@ -354,7 +354,7 @@ namespace ShippeeAPI.Migrations
                 name: "Qualifications");
 
             migrationBuilder.DropTable(
-                name: "SkillUser");
+                name: "Student_Skills");
 
             migrationBuilder.DropTable(
                 name: "Annoucement_Companies");

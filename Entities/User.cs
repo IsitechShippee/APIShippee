@@ -5,6 +5,7 @@ namespace ShippeeAPI;
 
 public class User
 {
+
     [Key]
     public Int32 id { get; set; }
 
@@ -40,7 +41,7 @@ public class User
 
     public DateOnly? birthday { get; set; } 
 
-    public List<Skill>? skill { get; set; }
+    public List<Student_Skill>? Student_skills { get; set; }
 
     public Company? Company { get; set; }
     

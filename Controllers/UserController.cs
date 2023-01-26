@@ -27,7 +27,7 @@ public class UserController : ControllerBase
     {
         User? user = _context.Users.FirstOrDefault(p => p.email == email && p.password == password);
 
-        // List<Student_Skill> student_skills = await _context.Student_skills.Where(i => i.Userid == 1).ToListAsync();
+        List<Student_Skill> student_skills = await _context.Student_Skills.Where(i => i.user_id == 1).ToListAsync();
 
         // List<Skill> skills = new List<Skill>();
         // foreach(Student_Skill skill_student in student_skills)
