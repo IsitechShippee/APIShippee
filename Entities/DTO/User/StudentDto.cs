@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShippeeAPI;
 
-public class User
+public class StudentDto
 {
 
     [Key]
@@ -41,11 +41,6 @@ public class User
 
     public DateOnly? birthday { get; set; } 
 
-    public List<Student_Skill>? skills { get; set; }
-
-    public Company? Company { get; set; }
+    public List<SkillDto>? skills { get; set; }
     
-    [ForeignKey("Company")]
-    public Int32? id_company { get; set; }
-
 }

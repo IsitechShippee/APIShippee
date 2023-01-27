@@ -5,9 +5,9 @@ namespace ShippeeAPI;
 
 public class Student_Skill
 {
-    public int user_id { get; set; }
-    public User? user { get; set; }
+    public Int32 user_id { get; set; }
+    public User? User { get; set; }
 
-    public int skill_id { get; set; }
-    public Skill? skill { get; set; }
+    public Int32 skill_id { get; set; }
+    public Skill? Skill { get; set; }
 }

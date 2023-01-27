@@ -2,6 +2,8 @@ using ShippeeAPI.Context;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ShippeeAPI.Controllers;
 
@@ -25,19 +27,60 @@ public class UserController : ControllerBase
     [HttpGet("Student by mail/passWord")]
     public async Task<IActionResult> GetStudentByMailPassword(string email, string password)
     {
-        User? user = _context.Users.FirstOrDefault(p => p.email == email && p.password == password);
+        User? personne =  _context.Users.FirstOrDefault(i => i.email == email && i.password == password);
 
-        List<Student_Skill> student_skills = await _context.Student_Skills.Where(i => i.user_id == 1).ToListAsync();
+        var users = _context.Users
+            .Include(x => x.skills)
+                .ThenInclude(x => x.Skill)
+            .Where(x => x.id == personne.id)
+            .ToList();
+            
+        var options = new JsonSerializerOptions
+        {
+            ReferenceHandler = ReferenceHandler.IgnoreCycles
+        };
 
-        // List<Skill> skills = new List<Skill>();
-        // foreach(Student_Skill skill_student in student_skills)
-        // {
-        //     Skill? newskills = _context.Skills.FirstOrDefault(p => p.id == skill_student.Skillid);
-        //     skills.Add(newskills);
-        //     return Ok(newskills);
-        // }
+        var json = System.Text.Json.JsonSerializer.Serialize(users, options);
 
-        return Ok(user);
+        var jsonDoc = JsonDocument.Parse(json);
+        var root = jsonDoc.RootElement;
+        foreach (var user in root.EnumerateArray())
+        {
+            var valRecup = System.Text.Json.JsonSerializer.Deserialize<User>(user);
+
+            StudentDto userDto = new StudentDto();
+            userDto.id = valRecup.id;
+            userDto.surname = valRecup.surname;
+            userDto.firstname = valRecup.firstname;
+            userDto.email = valRecup.email;
+            userDto.password = valRecup.password;
+            userDto.picture = valRecup.picture;
+            userDto.is_online = valRecup.is_online;
+            userDto.type_user = valRecup.type_user;
+            userDto.description = valRecup.description;
+            userDto.web_site = valRecup.web_site;
+            userDto.cv = valRecup.cv;
+            userDto.city = valRecup.city;
+            userDto.birthday = valRecup.birthday;
+
+            List<SkillDto> skillDto = new List<SkillDto>();
+
+            foreach(Student_Skill skill in valRecup.skills)
+            {
+                SkillDto newSkill = new SkillDto();
+                newSkill.id = skill.Skill.id;
+                newSkill.title = skill.Skill.title;
+
+                skillDto.Add(newSkill);
+            }
+
+            userDto.skills = skillDto;
+
+
+            return Ok(userDto);
+        }
+
+        return Ok("erreur");
     }
     
 }

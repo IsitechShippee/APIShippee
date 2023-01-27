@@ -3,13 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShippeeAPI;
 
-public class Skill
+public class SkillDto
 {
+
     [Key]
     public Int32 id { get; set; }
 
     [Column(TypeName = "varchar(255)")]
     public string? title { get; set; }
-
-    public List<Student_Skill>? students { get; set; }
 }

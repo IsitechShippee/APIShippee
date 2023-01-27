@@ -11,8 +11,8 @@ using ShippeeAPI.Context;
 namespace ShippeeAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230126133249_testmigrate")]
-    partial class testmigrate
+    [Migration("20230127104154_firstMigration")]
+    partial class firstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -184,21 +184,6 @@ namespace ShippeeAPI.Migrations
                     b.ToTable("Naf_Sections");
                 });
 
-            modelBuilder.Entity("ShippeeAPI.Qualification", b =>
-                {
-                    b.Property<int>("Annoucement_Companyid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Skillid")
-                        .HasColumnType("int");
-
-                    b.HasKey("Annoucement_Companyid", "Skillid");
-
-                    b.HasIndex("Skillid");
-
-                    b.ToTable("Qualifications");
-                });
-
             modelBuilder.Entity("ShippeeAPI.Skill", b =>
                 {
                     b.Property<int>("id")
@@ -249,7 +234,7 @@ namespace ShippeeAPI.Migrations
                     b.Property<string>("email")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("fristname")
+                    b.Property<string>("firstname")
                         .HasColumnType("varchar(255)");
 
                     b.Property<int?>("id_company")
@@ -258,13 +243,13 @@ namespace ShippeeAPI.Migrations
                     b.Property<bool?>("is_online")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("name")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<string>("password")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("picture")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("surname")
                         .HasColumnType("varchar(255)");
 
                     b.Property<int?>("type_user")
@@ -349,42 +334,23 @@ namespace ShippeeAPI.Migrations
                     b.Navigation("Naf_Section");
                 });
 
-            modelBuilder.Entity("ShippeeAPI.Qualification", b =>
-                {
-                    b.HasOne("ShippeeAPI.Annoucement_Company", "Annoucement_Company")
-                        .WithMany("Qualifications")
-                        .HasForeignKey("Annoucement_Companyid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShippeeAPI.Skill", "Skill")
-                        .WithMany("Qualifications")
-                        .HasForeignKey("Skillid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Annoucement_Company");
-
-                    b.Navigation("Skill");
-                });
-
             modelBuilder.Entity("ShippeeAPI.Student_Skill", b =>
                 {
-                    b.HasOne("ShippeeAPI.Skill", "skill")
-                        .WithMany("Student_skills")
+                    b.HasOne("ShippeeAPI.Skill", "Skill")
+                        .WithMany("students")
                         .HasForeignKey("skill_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShippeeAPI.User", "user")
-                        .WithMany("Student_skills")
+                    b.HasOne("ShippeeAPI.User", "User")
+                        .WithMany("skills")
                         .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("skill");
+                    b.Navigation("Skill");
 
-                    b.Navigation("user");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ShippeeAPI.User", b =>
@@ -396,21 +362,14 @@ namespace ShippeeAPI.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("ShippeeAPI.Annoucement_Company", b =>
-                {
-                    b.Navigation("Qualifications");
-                });
-
             modelBuilder.Entity("ShippeeAPI.Skill", b =>
                 {
-                    b.Navigation("Qualifications");
-
-                    b.Navigation("Student_skills");
+                    b.Navigation("students");
                 });
 
             modelBuilder.Entity("ShippeeAPI.User", b =>
                 {
-                    b.Navigation("Student_skills");
+                    b.Navigation("skills");
                 });
 #pragma warning restore 612, 618
         }

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShippeeAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class testmigrate : Migration
+    public partial class firstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -106,9 +106,9 @@ namespace ShippeeAPI.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(type: "varchar(255)", nullable: true)
+                    surname = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    fristname = table.Column<string>(type: "varchar(255)", nullable: true)
+                    firstname = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     email = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -258,31 +258,6 @@ namespace ShippeeAPI.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "Qualifications",
-                columns: table => new
-                {
-                    AnnoucementCompanyid = table.Column<int>(name: "Annoucement_Companyid", type: "int", nullable: false),
-                    Skillid = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Qualifications", x => new { x.AnnoucementCompanyid, x.Skillid });
-                    table.ForeignKey(
-                        name: "FK_Qualifications_Annoucement_Companies_Annoucement_Companyid",
-                        column: x => x.AnnoucementCompanyid,
-                        principalTable: "Annoucement_Companies",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Qualifications_Skills_Skillid",
-                        column: x => x.Skillid,
-                        principalTable: "Skills",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
             migrationBuilder.CreateIndex(
                 name: "IX_Annoucement_Companies_id_job",
                 table: "Annoucement_Companies",
@@ -329,11 +304,6 @@ namespace ShippeeAPI.Migrations
                 column: "id_naf");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Qualifications_Skillid",
-                table: "Qualifications",
-                column: "Skillid");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Student_Skills_skill_id",
                 table: "Student_Skills",
                 column: "skill_id");
@@ -348,22 +318,19 @@ namespace ShippeeAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Annoucement_Students");
+                name: "Annoucement_Companies");
 
             migrationBuilder.DropTable(
-                name: "Qualifications");
+                name: "Annoucement_Students");
 
             migrationBuilder.DropTable(
                 name: "Student_Skills");
 
             migrationBuilder.DropTable(
-                name: "Annoucement_Companies");
+                name: "Jobs");
 
             migrationBuilder.DropTable(
                 name: "Skills");
-
-            migrationBuilder.DropTable(
-                name: "Jobs");
 
             migrationBuilder.DropTable(
                 name: "Users");

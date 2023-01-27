@@ -30,5 +30,4 @@ public class Annoucement_Company
     [ForeignKey("Naf_Division")]
     public Int32? id_naf_division { get; set; }
 
-    public List<Qualification>? Qualifications { get; set; }
 }
