@@ -26,7 +26,10 @@ public class User
 
     public bool? is_online { get; set; }
 
-    public Int32? type_user {get; set; }
+    public Type_User? Type_User { get; set; }
+    
+    [ForeignKey("Type_User")]
+    public Int32? id_type_user { get; set; }
 
     public string? description { get; set; }
 

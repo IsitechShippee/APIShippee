@@ -17,6 +17,9 @@ public class Company
     public Int32? id_naf { get; set; }
 
     [Column(TypeName = "varchar(255)")]
+    public string? picture { get; set; }
+
+    [Column(TypeName = "varchar(255)")]
     public string? street { get; set; }
     
     [Column(TypeName = "varchar(255)")]

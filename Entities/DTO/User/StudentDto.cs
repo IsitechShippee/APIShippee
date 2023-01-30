@@ -25,7 +25,7 @@ public class StudentDto
 
     public bool? is_online { get; set; }
 
-    public Int32? type_user {get; set; }
+    public Dictionary<Int32, string>? id_type_user {get; set; }
 
     public string? description { get; set; }
 

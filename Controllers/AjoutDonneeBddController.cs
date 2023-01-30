@@ -47,7 +47,7 @@ public class AjoutDonneeBddController : ControllerBase
             }
         }
 
-        return Ok("Les naf_sections sont bien ajouté");
+        return Ok("Les naf_sections sont bien ajoutés");
     }
 
 
@@ -79,13 +79,42 @@ public class AjoutDonneeBddController : ControllerBase
             }
         }
 
-        return Ok("Les naf_divisons sont bien ajouté");
+        return Ok("Les naf_divisons sont bien ajoutés");
+    }
+
+    [HttpGet("Ajout_Type_User")]
+    public async Task<IActionResult> GetAjout_Type_User()
+    {
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Type_User.xls");
+
+        WorksheetCollection collection = wb.Worksheets;
+
+        for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
+        {
+            Worksheet worksheet = collection[worksheetIndex];
+
+            int rows = worksheet.Cells.MaxDataRow;
+            int cols = worksheet.Cells.MaxDataColumn;
+
+            for (int i = 0; i <= rows; i++)
+            {
+                Type_User type_user = new Type_User();
+                type_user.id = Convert.ToInt32(worksheet.Cells[i, 0].Value);
+                type_user.title = Convert.ToString(worksheet.Cells[i, 1].Value);
+
+
+                await _context.Type_Users.AddAsync(type_user);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return Ok("Les type users sont bien ajoutés");
     }
 
     [HttpGet("Ajout_User")]
     public async Task<IActionResult> GetAjout_User()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/user.xls");
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/User.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -106,7 +135,7 @@ public class AjoutDonneeBddController : ControllerBase
                 user.password = Convert.ToString(worksheet.Cells[i, 4].Value);
                 user.picture = Convert.ToString(worksheet.Cells[i, 5].Value);
                 user.is_online = Convert.ToBoolean(worksheet.Cells[i, 6].Value);
-                user.type_user = Convert.ToInt32(worksheet.Cells[i, 7].Value);
+                user.id_type_user = Convert.ToInt32(worksheet.Cells[i, 7].Value);
                 user.description = Convert.ToString(worksheet.Cells[i, 8].Value);
                 user.web_site = Convert.ToString(worksheet.Cells[i, 9].Value);
                 user.cv = Convert.ToString(worksheet.Cells[i, 10].Value);
@@ -124,7 +153,36 @@ public class AjoutDonneeBddController : ControllerBase
             }
         }
 
-        return Ok("Les users bien ajouté");
+        return Ok("Les users sont bien ajoutés");
+    }
+
+
+    [HttpGet("Ajout_Skill")]
+    public async Task<IActionResult> GetAjout_Skill()
+    {
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Skill.xls");
+
+        WorksheetCollection collection = wb.Worksheets;
+
+        for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
+        {
+            Worksheet worksheet = collection[worksheetIndex];
+
+            int rows = worksheet.Cells.MaxDataRow;
+            int cols = worksheet.Cells.MaxDataColumn;
+
+            for (int i = 0; i <= rows; i++)
+            {
+                Skill skill = new Skill();
+                skill.id = Convert.ToInt32(worksheet.Cells[i, 0].Value);
+                skill.title = Convert.ToString(worksheet.Cells[i, 1].Value);
+
+                await _context.Skills.AddAsync(skill);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return Ok("Les skills sont bien ajoutés");
     }
 
     
