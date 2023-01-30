@@ -5,8 +5,7 @@ namespace ShippeeAPI;
 
 public class StudentDto
 {
-
-    [Key]
+    public bool connexion { get; set; }
     public Int32 id { get; set; }
 
     [Column(TypeName = "varchar(255)")]
@@ -37,10 +36,15 @@ public class StudentDto
     public string? cv { get; set; }
 
     [Column(TypeName = "varchar(255)")]
+    public string? cp { get; set; }
+
+    [Column(TypeName = "varchar(255)")]
     public string? city { get; set; }
 
     public DateOnly? birthday { get; set; } 
 
-    public List<SkillDto>? skills { get; set; }
+    public bool? is_conveyed { get; set; }
+
+    public Dictionary<Int32, string>? skills { get; set; }
     
 }

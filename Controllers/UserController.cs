@@ -24,10 +24,33 @@ public class UserController : ControllerBase
     }
 
 
-    [HttpGet("Student by mail/passWord")]
+    [HttpGet("testconnect")]
     public async Task<IActionResult> GetStudentByMailPassword(string email, string password)
     {
         User? personne =  _context.Users.FirstOrDefault(i => i.email == email && i.password == password);
+
+        if(personne == null)
+        {
+            User? testemail = _context.Users.FirstOrDefault(i => i.email == email);
+            User? testpassword = _context.Users.FirstOrDefault(i => i.password == password);
+
+            Dictionary<string, string> erreur = new Dictionary<string, string>();
+            erreur.Add("connexion", "false");
+
+            if(testemail == null)
+            {
+                erreur.Add("erreur", "Cette adresse mail n'existe pas !");
+            }
+            else
+            {
+                if(testpassword == null)
+                {
+                    erreur.Add("erreur", "Ce mot de passe ne correspond pas à l'adresse mail saisie !");
+                }
+            }
+
+            return Ok(erreur);
+        }
 
         var users = _context.Users
             .Include(x => x.skills)
@@ -49,6 +72,7 @@ public class UserController : ControllerBase
             var valRecup = System.Text.Json.JsonSerializer.Deserialize<User>(user);
 
             StudentDto userDto = new StudentDto();
+            userDto.connexion = true;
             userDto.id = valRecup.id;
             userDto.surname = valRecup.surname;
             userDto.firstname = valRecup.firstname;
@@ -60,18 +84,16 @@ public class UserController : ControllerBase
             userDto.description = valRecup.description;
             userDto.web_site = valRecup.web_site;
             userDto.cv = valRecup.cv;
+            userDto.cp = valRecup.cp;
             userDto.city = valRecup.city;
             userDto.birthday = valRecup.birthday;
+            userDto.is_conveyed = valRecup.is_conveyed;
 
-            List<SkillDto> skillDto = new List<SkillDto>();
+            Dictionary<Int32, string> skillDto = new Dictionary<Int32, string>();
 
             foreach(Student_Skill skill in valRecup.skills)
             {
-                SkillDto newSkill = new SkillDto();
-                newSkill.id = skill.Skill.id;
-                newSkill.title = skill.Skill.title;
-
-                skillDto.Add(newSkill);
+                skillDto.Add(skill.Skill.id, skill.Skill.title);
             }
 
             userDto.skills = skillDto;

@@ -28,7 +28,6 @@ public class AjoutDonneeBddController : ControllerBase
         Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Naf_Section.xls");
 
         WorksheetCollection collection = wb.Worksheets;
-        List<Naf_Section> listA = new List<Naf_Section>();
 
         for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
         {
@@ -45,8 +44,6 @@ public class AjoutDonneeBddController : ControllerBase
 
                 await _context.Naf_Sections.AddAsync(naf);
                 await _context.SaveChangesAsync();
-
-                listA.Add(naf);
             }
         }
 
@@ -62,7 +59,6 @@ public class AjoutDonneeBddController : ControllerBase
         Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Naf_Division.xls");
 
         WorksheetCollection collection = wb.Worksheets;
-        List<Naf_Division> listA = new List<Naf_Division>();
 
         for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
         {
@@ -80,12 +76,55 @@ public class AjoutDonneeBddController : ControllerBase
 
                 await _context.Naf_Divisions.AddAsync(naf);
                 await _context.SaveChangesAsync();
-
-                listA.Add(naf);
             }
         }
 
         return Ok("Les naf_divisons sont bien ajouté");
+    }
+
+    [HttpGet("Ajout_User")]
+    public async Task<IActionResult> GetAjout_User()
+    {
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/user.xls");
+
+        WorksheetCollection collection = wb.Worksheets;
+
+        for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
+        {
+            Worksheet worksheet = collection[worksheetIndex];
+
+            int rows = worksheet.Cells.MaxDataRow;
+            int cols = worksheet.Cells.MaxDataColumn;
+
+            for (int i = 0; i <= rows; i++)
+            {
+                User user = new User();
+                user.id = Convert.ToInt32(worksheet.Cells[i, 0].Value);
+                user.surname = Convert.ToString(worksheet.Cells[i, 1].Value);
+                user.firstname = Convert.ToString(worksheet.Cells[i, 2].Value);
+                user.email = Convert.ToString(worksheet.Cells[i, 3].Value);
+                user.password = Convert.ToString(worksheet.Cells[i, 4].Value);
+                user.picture = Convert.ToString(worksheet.Cells[i, 5].Value);
+                user.is_online = Convert.ToBoolean(worksheet.Cells[i, 6].Value);
+                user.type_user = Convert.ToInt32(worksheet.Cells[i, 7].Value);
+                user.description = Convert.ToString(worksheet.Cells[i, 8].Value);
+                user.web_site = Convert.ToString(worksheet.Cells[i, 9].Value);
+                user.cv = Convert.ToString(worksheet.Cells[i, 10].Value);
+                user.cp = Convert.ToString(worksheet.Cells[i, 11].Value);
+                user.city = Convert.ToString(worksheet.Cells[i, 12].Value);
+                DateTime date = Convert.ToDateTime(worksheet.Cells[i, 13].Value);
+                string dateOnly = date.ToString("yyyy-MM-dd");
+                DateOnly test = DateOnly.Parse(dateOnly);
+                user.birthday = test;
+                user.is_conveyed = Convert.ToBoolean(worksheet.Cells[i, 14].Value);
+
+
+                await _context.Users.AddAsync(user);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return Ok("Les users bien ajouté");
     }
 
     

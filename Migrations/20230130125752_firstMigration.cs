@@ -124,9 +124,12 @@ namespace ShippeeAPI.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     cv = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    cp = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     city = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     birthday = table.Column<DateOnly>(type: "date", nullable: true),
+                    isconveyed = table.Column<bool>(name: "is_conveyed", type: "tinyint(1)", nullable: true),
                     idcompany = table.Column<int>(name: "id_company", type: "int", nullable: true)
                 },
                 constraints: table =>

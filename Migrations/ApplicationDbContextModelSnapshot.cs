@@ -222,6 +222,9 @@ namespace ShippeeAPI.Migrations
                     b.Property<string>("city")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("cp")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("cv")
                         .HasColumnType("varchar(255)");
 
@@ -236,6 +239,9 @@ namespace ShippeeAPI.Migrations
 
                     b.Property<int?>("id_company")
                         .HasColumnType("int");
+
+                    b.Property<bool?>("is_conveyed")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool?>("is_online")
                         .HasColumnType("tinyint(1)");

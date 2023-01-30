@@ -37,9 +37,14 @@ public class User
     public string? cv { get; set; }
 
     [Column(TypeName = "varchar(255)")]
+    public string? cp { get; set; }
+
+    [Column(TypeName = "varchar(255)")]
     public string? city { get; set; }
 
     public DateOnly? birthday { get; set; } 
+    
+    public bool? is_conveyed { get; set; }
 
     public List<Student_Skill>? skills { get; set; }
 
