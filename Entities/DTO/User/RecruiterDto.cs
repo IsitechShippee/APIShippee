@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShippeeAPI;
 
-public class StudentDto
+public class RecruiterDto
 {
     public bool connexion { get; set; }
     public Int32 id { get; set; }
@@ -27,24 +27,6 @@ public class StudentDto
 
     public Type_User? id_type_user {get; set; }
 
-    public string? description { get; set; }
-
-    [Column(TypeName = "varchar(255)")]
-    public string? web_site { get; set; }
-
-    [Column(TypeName = "varchar(255)")]
-    public string? cv { get; set; }
-
-    [Column(TypeName = "varchar(255)")]
-    public string? cp { get; set; }
-
-    [Column(TypeName = "varchar(255)")]
-    public string? city { get; set; }
-
-    public DateOnly? birthday { get; set; } 
-
-    public bool? is_conveyed { get; set; }
-
-    public Dictionary<Int32, string>? skills { get; set; }
+    public CompanyDto? company { get; set; }
     
 }

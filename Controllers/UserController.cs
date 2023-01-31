@@ -80,37 +80,37 @@ public class UserController : ControllerBase
         var jsonDoc = JsonDocument.Parse(json);
         var root = jsonDoc.RootElement;
 
-        // on initialise un user filtrer sur etudiant
-        StudentDto userDto = new StudentDto();
+        
 
         foreach (var user in root.EnumerateArray())
         {
             var valRecup = System.Text.Json.JsonSerializer.Deserialize<User>(user);
-            
-            //on met dans le user filtrer les donées que l'on veut recup
-            userDto.connexion = true;
-            userDto.id = valRecup.id;
-            userDto.surname = valRecup.surname;
-            userDto.firstname = valRecup.firstname;
-            userDto.email = valRecup.email;
-            userDto.password = valRecup.password;
-            userDto.picture = valRecup.picture;
-            userDto.is_online = valRecup.is_online;
-
-            Type_User? type_user = _context.Type_Users.FirstOrDefault(i => i.id == valRecup.id_type_user);
-            Dictionary<Int32, string> typeUserDico = new Dictionary<Int32, string>();
-            typeUserDico.Add(type_user.id, type_user.title);
-            userDto.id_type_user = typeUserDico;
 
             if(valRecup.id_type_user == 1)
             {
-                userDto.description = valRecup.description;
-                userDto.web_site = valRecup.web_site;
-                userDto.cv = valRecup.cv;
-                userDto.cp = valRecup.cp;
-                userDto.city = valRecup.city;
-                userDto.birthday = valRecup.birthday;
-                userDto.is_conveyed = valRecup.is_conveyed;
+                // on initialise un user filtrer sur etudiant
+                StudentDto studentDto = new StudentDto();
+
+                //on met dans le user filtrer les donées que l'on veut recup
+                studentDto.connexion = true;
+                studentDto.id = valRecup.id;
+                studentDto.surname = valRecup.surname;
+                studentDto.firstname = valRecup.firstname;
+                studentDto.email = valRecup.email;
+                studentDto.password = valRecup.password;
+                studentDto.picture = valRecup.picture;
+                studentDto.is_online = valRecup.is_online;
+
+                Type_User? type_user = _context.Type_Users.FirstOrDefault(i => i.id == valRecup.id_type_user);
+                studentDto.id_type_user = type_user;
+
+                studentDto.description = valRecup.description;
+                studentDto.web_site = valRecup.web_site;
+                studentDto.cv = valRecup.cv;
+                studentDto.cp = valRecup.cp;
+                studentDto.city = valRecup.city;
+                studentDto.birthday = valRecup.birthday;
+                studentDto.is_conveyed = valRecup.is_conveyed;
 
                 // pour les skills on créer un dictionnaire pour avoir les skills de type "id": "value"
                 Dictionary<Int32, string> skillDico = new Dictionary<Int32, string>();
@@ -120,11 +120,39 @@ public class UserController : ControllerBase
                     skillDico.Add(skill.Skill.id, skill.Skill.title);
                 }
 
-                userDto.skills = skillDico;
+                studentDto.skills = skillDico;
+
+                return Ok(studentDto);
+            }
+            else
+            {
+                // on initialise un user filtrer sur etudiant
+                RecruiterDto recruiterDto = new RecruiterDto();
+
+                //on met dans le user filtrer les donées que l'on veut recup
+                recruiterDto.connexion = true;
+                recruiterDto.id = valRecup.id;
+                recruiterDto.surname = valRecup.surname;
+                recruiterDto.firstname = valRecup.firstname;
+                recruiterDto.email = valRecup.email;
+                recruiterDto.password = valRecup.password;
+                recruiterDto.picture = valRecup.picture;
+                recruiterDto.is_online = valRecup.is_online;
+
+                Type_User? type_user = _context.Type_Users.FirstOrDefault(i => i.id == valRecup.id_type_user);
+                recruiterDto.id_type_user = type_user;
+
+                Company? company = _context.Companies.FirstOrDefault(i => i.siren == valRecup.id_company);
+                CompanyDto? companyDto = new CompanyDto();
+                companyDto.siren = company.siren;
+                companyDto.name = company.name;
+                recruiterDto.company = companyDto;
+
+                return Ok(recruiterDto);
             }
         }
 
-        return Ok(userDto);
+        return Ok("Erreur");
     }
     
 }

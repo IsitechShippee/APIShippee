@@ -31,8 +31,10 @@ public class Company
     [Column(TypeName = "varchar(255)")]
     public string? legal_form { get; set; }
     
-    [Column(TypeName = "varchar(255)")]
-    public string? effective { get; set; }
+    public Effective? Effective { get; set; }
+    
+    [ForeignKey("Effective")]
+    public Int32? id_effective { get; set; }
     
     [Column(TypeName = "varchar(255)")]
     public string? web_site { get; set; } 

@@ -16,6 +16,36 @@ namespace ShippeeAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Annoucement_Status",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    status = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Annoucement_Status", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Effectives",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    type = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Effectives", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Naf_Sections",
                 columns: table => new
                 {
@@ -79,8 +109,7 @@ namespace ShippeeAPI.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     legalform = table.Column<string>(name: "legal_form", type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    effective = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ideffective = table.Column<int>(name: "id_effective", type: "int", nullable: true),
                     website = table.Column<string>(name: "web_site", type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     payment = table.Column<bool>(type: "tinyint(1)", nullable: true)
@@ -89,7 +118,33 @@ namespace ShippeeAPI.Migrations
                 {
                     table.PrimaryKey("PK_Companies", x => x.siren);
                     table.ForeignKey(
+                        name: "FK_Companies_Effectives_id_effective",
+                        column: x => x.ideffective,
+                        principalTable: "Effectives",
+                        principalColumn: "id");
+                    table.ForeignKey(
                         name: "FK_Companies_Naf_Sections_id_naf",
+                        column: x => x.idnaf,
+                        principalTable: "Naf_Sections",
+                        principalColumn: "id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Jobs",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    title = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    idnaf = table.Column<int>(name: "id_naf", type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Jobs", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Jobs_Naf_Sections_id_naf",
                         column: x => x.idnaf,
                         principalTable: "Naf_Sections",
                         principalColumn: "id");
@@ -191,8 +246,18 @@ namespace ShippeeAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Companies_id_effective",
+                table: "Companies",
+                column: "id_effective");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Companies_id_naf",
                 table: "Companies",
+                column: "id_naf");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Jobs_id_naf",
+                table: "Jobs",
                 column: "id_naf");
 
             migrationBuilder.CreateIndex(
@@ -220,6 +285,12 @@ namespace ShippeeAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Annoucement_Status");
+
+            migrationBuilder.DropTable(
+                name: "Jobs");
+
+            migrationBuilder.DropTable(
                 name: "Naf_Divisions");
 
             migrationBuilder.DropTable(
@@ -236,6 +307,9 @@ namespace ShippeeAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Type_Users");
+
+            migrationBuilder.DropTable(
+                name: "Effectives");
 
             migrationBuilder.DropTable(
                 name: "Naf_Sections");

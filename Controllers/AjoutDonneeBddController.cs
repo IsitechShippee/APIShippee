@@ -82,6 +82,71 @@ public class AjoutDonneeBddController : ControllerBase
         return Ok("Les naf_divisons sont bien ajoutés");
     }
 
+    [HttpGet("Ajout_Effective")]
+    public async Task<IActionResult> GetAjout_Effective()
+    {
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Effectif.xls");
+
+        WorksheetCollection collection = wb.Worksheets;
+
+        for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
+        {
+            Worksheet worksheet = collection[worksheetIndex];
+
+            int rows = worksheet.Cells.MaxDataRow;
+            int cols = worksheet.Cells.MaxDataColumn;
+
+            for (int i = 0; i <= rows; i++)
+            {
+                Effective effectif = new Effective();
+                effectif.id = Convert.ToInt32(worksheet.Cells[i, 0].Value);
+                effectif.type = Convert.ToString(worksheet.Cells[i, 1].Value);
+
+                await _context.Effectives.AddAsync(effectif);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return Ok("Les effectifs sont bien ajoutés");
+    }
+
+    [HttpGet("Ajout_Company")]
+    public async Task<IActionResult> GetAjout_Company()
+    {
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Company.xls");
+
+        WorksheetCollection collection = wb.Worksheets;
+
+        for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
+        {
+            Worksheet worksheet = collection[worksheetIndex];
+
+            int rows = worksheet.Cells.MaxDataRow;
+            int cols = worksheet.Cells.MaxDataColumn;
+
+            for (int i = 0; i <= rows; i++)
+            {
+                Company company = new Company();
+                company.siren = Convert.ToInt32(worksheet.Cells[i, 0].Value);
+                company.name = Convert.ToString(worksheet.Cells[i, 1].Value);
+                company.id_naf = Convert.ToInt32(worksheet.Cells[i, 2].Value);
+                company.picture = Convert.ToString(worksheet.Cells[i, 3].Value);
+                company.street = Convert.ToString(worksheet.Cells[i, 4].Value);
+                company.cp = Convert.ToString(worksheet.Cells[i, 5].Value);
+                company.city = Convert.ToString(worksheet.Cells[i, 6].Value);
+                company.legal_form = Convert.ToString(worksheet.Cells[i, 7].Value);
+                company.id_effective = Convert.ToInt32(worksheet.Cells[i, 8].Value);
+                company.web_site = Convert.ToString(worksheet.Cells[i, 9].Value);
+                company.payment = Convert.ToBoolean(worksheet.Cells[i, 10].Value);
+
+                await _context.Companies.AddAsync(company);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return Ok("Les companies sont bien ajoutés");
+    }
+
     [HttpGet("Ajout_Type_User")]
     public async Task<IActionResult> GetAjout_Type_User()
     {
@@ -185,5 +250,31 @@ public class AjoutDonneeBddController : ControllerBase
         return Ok("Les skills sont bien ajoutés");
     }
 
-    
+    [HttpGet("Ajout_Student_Skill")]
+    public async Task<IActionResult> GetAjout_Student_Skill()
+    {
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/StudentSkills.xls");
+
+        WorksheetCollection collection = wb.Worksheets;
+
+        for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
+        {
+            Worksheet worksheet = collection[worksheetIndex];
+
+            int rows = worksheet.Cells.MaxDataRow;
+            int cols = worksheet.Cells.MaxDataColumn;
+
+            for (int i = 0; i <= rows; i++)
+            {
+                Student_Skill studentskill = new Student_Skill();
+                studentskill.user_id = Convert.ToInt32(worksheet.Cells[i, 0].Value);
+                studentskill.skill_id = Convert.ToInt32(worksheet.Cells[i, 1].Value);
+
+                await _context.Student_Skills.AddAsync(studentskill);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return Ok("Les student_skill sont bien ajoutés");
+    }
 }
