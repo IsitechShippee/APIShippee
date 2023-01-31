@@ -71,7 +71,7 @@ public class AjoutDonneeBddController : ControllerBase
             {
                 Naf_Division naf = new Naf_Division();
                 naf.id = Convert.ToInt32(worksheet.Cells[i, 0].Value);
-                naf.id_naf = Convert.ToInt32(worksheet.Cells[i, 1].Value);
+                naf.id_naf_section = Convert.ToInt32(worksheet.Cells[i, 1].Value);
                 naf.title = Convert.ToString(worksheet.Cells[i, 2].Value);
 
                 await _context.Naf_Divisions.AddAsync(naf);

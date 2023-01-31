@@ -19,6 +19,8 @@ namespace ShippeeAPI.Context
         public DbSet<Effective> Effectives  { get; set; } 
         public DbSet<Job> Jobs  { get; set; } 
         public DbSet<Annoucement_State> Annoucement_Status  { get; set; } 
+        public DbSet<Annoucement> Annoucements { get; set; } 
+
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

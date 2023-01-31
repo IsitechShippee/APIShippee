@@ -11,7 +11,7 @@ public class Naf_Division
     public Naf_Section? Naf_Section { get; set; }
     
     [ForeignKey("Naf_Section")]
-    public Int32? id_naf { get; set; }
+    public Int32? id_naf_section { get; set; }
 
     [Column(TypeName = "varchar(255)")]
     public string? title { get; set; }

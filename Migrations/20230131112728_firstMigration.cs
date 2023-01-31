@@ -157,7 +157,7 @@ namespace ShippeeAPI.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    idnaf = table.Column<int>(name: "id_naf", type: "int", nullable: true),
+                    idnafsection = table.Column<int>(name: "id_naf_section", type: "int", nullable: true),
                     title = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
@@ -165,8 +165,8 @@ namespace ShippeeAPI.Migrations
                 {
                     table.PrimaryKey("PK_Naf_Divisions", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Naf_Divisions_Naf_Sections_id_naf",
-                        column: x => x.idnaf,
+                        name: "FK_Naf_Divisions_Naf_Sections_id_naf_section",
+                        column: x => x.idnafsection,
                         principalTable: "Naf_Sections",
                         principalColumn: "id");
                 })
@@ -221,6 +221,55 @@ namespace ShippeeAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Annoucements",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Userid = table.Column<int>(type: "int", nullable: true),
+                    iduser = table.Column<int>(name: "id_user", type: "int", nullable: true),
+                    title = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    description = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    publishdate = table.Column<DateTime>(name: "publish_date", type: "datetime(6)", nullable: true),
+                    idtype = table.Column<int>(name: "id_type", type: "int", nullable: true),
+                    idstatus = table.Column<int>(name: "id_status", type: "int", nullable: true),
+                    idnafdivision = table.Column<int>(name: "id_naf_division", type: "int", nullable: true),
+                    idjob = table.Column<int>(name: "id_job", type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Annoucements", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Annoucements_Annoucement_Status_id_status",
+                        column: x => x.idstatus,
+                        principalTable: "Annoucement_Status",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Annoucements_Jobs_id_job",
+                        column: x => x.idjob,
+                        principalTable: "Jobs",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Annoucements_Naf_Divisions_id_naf_division",
+                        column: x => x.idnafdivision,
+                        principalTable: "Naf_Divisions",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Annoucements_Type_Users_id_type",
+                        column: x => x.idtype,
+                        principalTable: "Type_Users",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Annoucements_Users_Userid",
+                        column: x => x.Userid,
+                        principalTable: "Users",
+                        principalColumn: "id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Student_Skills",
                 columns: table => new
                 {
@@ -246,6 +295,31 @@ namespace ShippeeAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Annoucements_id_job",
+                table: "Annoucements",
+                column: "id_job");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Annoucements_id_naf_division",
+                table: "Annoucements",
+                column: "id_naf_division");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Annoucements_id_status",
+                table: "Annoucements",
+                column: "id_status");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Annoucements_id_type",
+                table: "Annoucements",
+                column: "id_type");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Annoucements_Userid",
+                table: "Annoucements",
+                column: "Userid");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Companies_id_effective",
                 table: "Companies",
                 column: "id_effective");
@@ -261,9 +335,9 @@ namespace ShippeeAPI.Migrations
                 column: "id_naf");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Naf_Divisions_id_naf",
+                name: "IX_Naf_Divisions_id_naf_section",
                 table: "Naf_Divisions",
-                column: "id_naf");
+                column: "id_naf_section");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Student_Skills_skill_id",
@@ -285,6 +359,12 @@ namespace ShippeeAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Annoucements");
+
+            migrationBuilder.DropTable(
+                name: "Student_Skills");
+
+            migrationBuilder.DropTable(
                 name: "Annoucement_Status");
 
             migrationBuilder.DropTable(
@@ -292,9 +372,6 @@ namespace ShippeeAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Naf_Divisions");
-
-            migrationBuilder.DropTable(
-                name: "Student_Skills");
 
             migrationBuilder.DropTable(
                 name: "Skills");
