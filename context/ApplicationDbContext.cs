@@ -21,6 +21,7 @@ namespace ShippeeAPI.Context
         public DbSet<Annoucement_State> Annoucement_Status  { get; set; } 
         public DbSet<Annoucement> Annoucements { get; set; } 
         public DbSet<Qualification> Qualifications { get; set; } 
+        public DbSet<Favorite> Favorites { get; set; } 
 
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -52,6 +53,21 @@ namespace ShippeeAPI.Context
                 .HasOne(x => x.Skill)
                 .WithMany(x => x.annoucements)
                 .HasForeignKey(x => x.id_skill);
+
+
+
+            modelBuilder.Entity<Favorite>()
+                .HasKey(x => new { x.id_user, x.id_annoucement });
+
+            modelBuilder.Entity<Favorite>()
+                .HasOne(x => x.Annoucement)
+                .WithMany(x => x.favorites_users)
+                .HasForeignKey(x => x.id_user);
+
+            modelBuilder.Entity<Favorite>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.favorites_annoucements)
+                .HasForeignKey(x => x.id_annoucement);
         }
     }
 }

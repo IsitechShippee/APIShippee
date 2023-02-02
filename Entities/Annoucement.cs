@@ -40,4 +40,5 @@ public class Annoucement
     [ForeignKey("Job")]
     public Int32? id_job { get; set; }
     public List<Qualification>? skills { get; set; }
+    public List<Favorite>? favorites_users { get; set; }
 }

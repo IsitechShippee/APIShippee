@@ -56,4 +56,6 @@ public class User
     [ForeignKey("Company")]
     public Int32? id_company { get; set; }
 
+    public List<Favorite>? favorites_annoucements { get; set; }
+
 }

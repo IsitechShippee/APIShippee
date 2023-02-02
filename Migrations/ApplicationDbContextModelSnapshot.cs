@@ -137,6 +137,21 @@ namespace ShippeeAPI.Migrations
                     b.ToTable("Effectives");
                 });
 
+            modelBuilder.Entity("ShippeeAPI.Favorite", b =>
+                {
+                    b.Property<int>("id_user")
+                        .HasColumnType("int");
+
+                    b.Property<int>("id_annoucement")
+                        .HasColumnType("int");
+
+                    b.HasKey("id_user", "id_annoucement");
+
+                    b.HasIndex("id_annoucement");
+
+                    b.ToTable("Favorites");
+                });
+
             modelBuilder.Entity("ShippeeAPI.Job", b =>
                 {
                     b.Property<int>("id")
@@ -355,6 +370,25 @@ namespace ShippeeAPI.Migrations
                     b.Navigation("Naf_Section");
                 });
 
+            modelBuilder.Entity("ShippeeAPI.Favorite", b =>
+                {
+                    b.HasOne("ShippeeAPI.User", "User")
+                        .WithMany("favorites_annoucements")
+                        .HasForeignKey("id_annoucement")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShippeeAPI.Annoucement", "Annoucement")
+                        .WithMany("favorites_users")
+                        .HasForeignKey("id_user")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Annoucement");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ShippeeAPI.Job", b =>
                 {
                     b.HasOne("ShippeeAPI.Naf_Section", "Naf_Section")
@@ -428,6 +462,8 @@ namespace ShippeeAPI.Migrations
 
             modelBuilder.Entity("ShippeeAPI.Annoucement", b =>
                 {
+                    b.Navigation("favorites_users");
+
                     b.Navigation("skills");
                 });
 
@@ -440,6 +476,8 @@ namespace ShippeeAPI.Migrations
 
             modelBuilder.Entity("ShippeeAPI.User", b =>
                 {
+                    b.Navigation("favorites_annoucements");
+
                     b.Navigation("skills");
                 });
 #pragma warning restore 612, 618

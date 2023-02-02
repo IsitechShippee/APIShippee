@@ -18,10 +18,10 @@ public class RecruiterDto
 
     public bool? is_online { get; set; }
 
-    public Type_User? id_type_user {get; set; }
+    public Type_User? type_user {get; set; }
 
     public CompanyDto? company { get; set; }
 
-    public List<AnnoucementRecruiterDto>? annonce {get; set; }
+    public List<AnnoucementRecruiterDto>? annoucements {get; set; }
     
 }

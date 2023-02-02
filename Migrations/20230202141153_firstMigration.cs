@@ -294,6 +294,31 @@ namespace ShippeeAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Favorites",
+                columns: table => new
+                {
+                    iduser = table.Column<int>(name: "id_user", type: "int", nullable: false),
+                    idannoucement = table.Column<int>(name: "id_annoucement", type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Favorites", x => new { x.iduser, x.idannoucement });
+                    table.ForeignKey(
+                        name: "FK_Favorites_Annoucements_id_user",
+                        column: x => x.iduser,
+                        principalTable: "Annoucements",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Favorites_Users_id_annoucement",
+                        column: x => x.idannoucement,
+                        principalTable: "Users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Qualifications",
                 columns: table => new
                 {
@@ -354,6 +379,11 @@ namespace ShippeeAPI.Migrations
                 column: "id_naf");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Favorites_id_annoucement",
+                table: "Favorites",
+                column: "id_annoucement");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Jobs_id_naf_section",
                 table: "Jobs",
                 column: "id_naf_section");
@@ -387,6 +417,9 @@ namespace ShippeeAPI.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Favorites");
+
             migrationBuilder.DropTable(
                 name: "Qualifications");
 
