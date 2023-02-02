@@ -304,14 +304,14 @@ namespace ShippeeAPI.Migrations
                 {
                     table.PrimaryKey("PK_Favorites", x => new { x.iduser, x.idannoucement });
                     table.ForeignKey(
-                        name: "FK_Favorites_Annoucements_id_user",
-                        column: x => x.iduser,
+                        name: "FK_Favorites_Annoucements_id_annoucement",
+                        column: x => x.idannoucement,
                         principalTable: "Annoucements",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Favorites_Users_id_annoucement",
-                        column: x => x.idannoucement,
+                        name: "FK_Favorites_Users_id_user",
+                        column: x => x.iduser,
                         principalTable: "Users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);

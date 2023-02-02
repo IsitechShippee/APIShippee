@@ -60,13 +60,13 @@ namespace ShippeeAPI.Context
                 .HasKey(x => new { x.id_user, x.id_annoucement });
 
             modelBuilder.Entity<Favorite>()
-                .HasOne(x => x.Annoucement)
-                .WithMany(x => x.favorites_users)
+                .HasOne(x => x.User)
+                .WithMany(x => x.favorites_annoucements)
                 .HasForeignKey(x => x.id_user);
 
             modelBuilder.Entity<Favorite>()
-                .HasOne(x => x.User)
-                .WithMany(x => x.favorites_annoucements)
+                .HasOne(x => x.Annoucement)
+                .WithMany(x => x.favorites_users)
                 .HasForeignKey(x => x.id_annoucement);
         }
     }

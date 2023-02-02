@@ -1,6 +1,6 @@
 namespace ShippeeAPI;
 
-public class AnnoucementRecruiterDto
+public class AnnoucementFavoriteRecruiterDto
 {
     public Int32 id { get; set; }
 

@@ -11,7 +11,7 @@ using ShippeeAPI.Context;
 namespace ShippeeAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230202141153_firstMigration")]
+    [Migration("20230202150046_firstMigration")]
     partial class firstMigration
     {
         /// <inheritdoc />
@@ -375,14 +375,14 @@ namespace ShippeeAPI.Migrations
 
             modelBuilder.Entity("ShippeeAPI.Favorite", b =>
                 {
-                    b.HasOne("ShippeeAPI.User", "User")
-                        .WithMany("favorites_annoucements")
+                    b.HasOne("ShippeeAPI.Annoucement", "Annoucement")
+                        .WithMany("favorites_users")
                         .HasForeignKey("id_annoucement")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShippeeAPI.Annoucement", "Annoucement")
-                        .WithMany("favorites_users")
+                    b.HasOne("ShippeeAPI.User", "User")
+                        .WithMany("favorites_annoucements")
                         .HasForeignKey("id_user")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

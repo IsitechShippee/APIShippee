@@ -94,7 +94,6 @@ public class UserController : ControllerBase
             // on recup donnée de la relation many_to_many selon l'id de l'user trouvé
             var users = _context.Users
                 .Include(x => x.skills)
-                    .ThenInclude(x => x.Skill)
                 .Where(x => x.id == personne.id)
                 .ToList();
             
@@ -121,13 +120,16 @@ public class UserController : ControllerBase
                     {
                         foreach(Student_Skill skill in valRecup.skills)
                         {
-                            if(skill.Skill != null)
+                            if(skill != null)
                             {
-                                skillDico.Add(skill.Skill.id, skill.Skill.title!);
+                                Skill? skillss = _context.Skills.FirstOrDefault(s => s.id == skill.id_skill);
+                                if(skillss != null)
+                                {
+                                    skillDico.Add(skillss.id, skillss.title);
+                                }
                             }
                         }
                     }
-
                     student.skills = skillDico;
                 }
             }
@@ -161,6 +163,48 @@ public class UserController : ControllerBase
 
             student.annoucements = annonceDto;
 
+            var favoris = _context.Users
+                .Include(x => x.favorites_annoucements)
+                .Where(x => x.id == personne.id)
+                .ToList();
+            
+            // format json car sinon impossible a lire les donénes
+            var options2 = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles
+            };
+
+            var json2 = System.Text.Json.JsonSerializer.Serialize(favoris, options2);
+            var jsonDoc2 = JsonDocument.Parse(json2);
+            var root2 = jsonDoc2.RootElement;
+
+            foreach (var user in root2.EnumerateArray())
+            {
+                var valRecup = System.Text.Json.JsonSerializer.Deserialize<User>(user);
+
+                if(valRecup != null)
+                {
+                    // pour les skills on créer un dictionnaire pour avoir les skills de type "id": "value"
+                    List<AnnoucementFavoriteRecruiterDto> favorieDico = new List<AnnoucementFavoriteRecruiterDto>();
+
+                    if(valRecup.favorites_annoucements != null)
+                    {
+                        foreach(Favorite favorie in valRecup.favorites_annoucements)
+                        {
+                            if(favorie != null)
+                            {
+                                Annoucement? annoucement = _context.Annoucements.FirstOrDefault(a => a.id == favorie.id_annoucement);
+                                if(annoucement != null)
+                                {
+                                    AnnoucementFavoriteRecruiterDto? annoncefavorie = _mapper.Map<AnnoucementFavoriteRecruiterDto>(annoucement);
+                                    favorieDico.Add(annoncefavorie);
+                                }
+                            }
+                        }
+                    }
+                    student.favorites = favorieDico;
+                }
+            }
 
             return Ok(student);
         }

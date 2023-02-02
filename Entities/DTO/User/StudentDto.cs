@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace ShippeeAPI;
 
 public class StudentDto
@@ -37,5 +34,6 @@ public class StudentDto
     public Dictionary<Int32, string>? skills { get; set; }
 
     public List<AnnoucementStudentDto>? annoucements {get; set; }
+    public List<AnnoucementFavoriteRecruiterDto>? favorites {get; set; }
     
 }

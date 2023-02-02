@@ -1,11 +1,9 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace ShippeeAPI;
 
 public class RecruiterDto
 {
     public bool connexion { get; set; }
+    
     public Int32 id { get; set; }
 
     public string? surname { get; set; }

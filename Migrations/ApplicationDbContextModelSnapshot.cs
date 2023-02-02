@@ -372,14 +372,14 @@ namespace ShippeeAPI.Migrations
 
             modelBuilder.Entity("ShippeeAPI.Favorite", b =>
                 {
-                    b.HasOne("ShippeeAPI.User", "User")
-                        .WithMany("favorites_annoucements")
+                    b.HasOne("ShippeeAPI.Annoucement", "Annoucement")
+                        .WithMany("favorites_users")
                         .HasForeignKey("id_annoucement")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShippeeAPI.Annoucement", "Annoucement")
-                        .WithMany("favorites_users")
+                    b.HasOne("ShippeeAPI.User", "User")
+                        .WithMany("favorites_annoucements")
                         .HasForeignKey("id_user")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
