@@ -138,14 +138,14 @@ namespace ShippeeAPI.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     title = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    idnaf = table.Column<int>(name: "id_naf", type: "int", nullable: true)
+                    idnafsection = table.Column<int>(name: "id_naf_section", type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Jobs", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Jobs_Naf_Sections_id_naf",
-                        column: x => x.idnaf,
+                        name: "FK_Jobs_Naf_Sections_id_naf_section",
+                        column: x => x.idnafsection,
                         principalTable: "Naf_Sections",
                         principalColumn: "id");
                 })
@@ -226,7 +226,6 @@ namespace ShippeeAPI.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Userid = table.Column<int>(type: "int", nullable: true),
                     iduser = table.Column<int>(name: "id_user", type: "int", nullable: true),
                     title = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -262,8 +261,8 @@ namespace ShippeeAPI.Migrations
                         principalTable: "Type_Users",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_Annoucements_Users_Userid",
-                        column: x => x.Userid,
+                        name: "FK_Annoucements_Users_id_user",
+                        column: x => x.iduser,
                         principalTable: "Users",
                         principalColumn: "id");
                 })
@@ -273,22 +272,47 @@ namespace ShippeeAPI.Migrations
                 name: "Student_Skills",
                 columns: table => new
                 {
-                    userid = table.Column<int>(name: "user_id", type: "int", nullable: false),
-                    skillid = table.Column<int>(name: "skill_id", type: "int", nullable: false)
+                    iduser = table.Column<int>(name: "id_user", type: "int", nullable: false),
+                    idskill = table.Column<int>(name: "id_skill", type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Student_Skills", x => new { x.userid, x.skillid });
+                    table.PrimaryKey("PK_Student_Skills", x => new { x.iduser, x.idskill });
                     table.ForeignKey(
-                        name: "FK_Student_Skills_Skills_skill_id",
-                        column: x => x.skillid,
+                        name: "FK_Student_Skills_Skills_id_skill",
+                        column: x => x.idskill,
                         principalTable: "Skills",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Student_Skills_Users_user_id",
-                        column: x => x.userid,
+                        name: "FK_Student_Skills_Users_id_user",
+                        column: x => x.iduser,
                         principalTable: "Users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Qualifications",
+                columns: table => new
+                {
+                    idannoucement = table.Column<int>(name: "id_annoucement", type: "int", nullable: false),
+                    idskill = table.Column<int>(name: "id_skill", type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Qualifications", x => new { x.idannoucement, x.idskill });
+                    table.ForeignKey(
+                        name: "FK_Qualifications_Annoucements_id_annoucement",
+                        column: x => x.idannoucement,
+                        principalTable: "Annoucements",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Qualifications_Skills_id_skill",
+                        column: x => x.idskill,
+                        principalTable: "Skills",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -315,9 +339,9 @@ namespace ShippeeAPI.Migrations
                 column: "id_type");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Annoucements_Userid",
+                name: "IX_Annoucements_id_user",
                 table: "Annoucements",
-                column: "Userid");
+                column: "id_user");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_id_effective",
@@ -330,9 +354,9 @@ namespace ShippeeAPI.Migrations
                 column: "id_naf");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Jobs_id_naf",
+                name: "IX_Jobs_id_naf_section",
                 table: "Jobs",
-                column: "id_naf");
+                column: "id_naf_section");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Naf_Divisions_id_naf_section",
@@ -340,9 +364,14 @@ namespace ShippeeAPI.Migrations
                 column: "id_naf_section");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Student_Skills_skill_id",
+                name: "IX_Qualifications_id_skill",
+                table: "Qualifications",
+                column: "id_skill");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Student_Skills_id_skill",
                 table: "Student_Skills",
-                column: "skill_id");
+                column: "id_skill");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_id_company",
@@ -359,10 +388,16 @@ namespace ShippeeAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Annoucements");
+                name: "Qualifications");
 
             migrationBuilder.DropTable(
                 name: "Student_Skills");
+
+            migrationBuilder.DropTable(
+                name: "Annoucements");
+
+            migrationBuilder.DropTable(
+                name: "Skills");
 
             migrationBuilder.DropTable(
                 name: "Annoucement_Status");
@@ -372,9 +407,6 @@ namespace ShippeeAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Naf_Divisions");
-
-            migrationBuilder.DropTable(
-                name: "Skills");
 
             migrationBuilder.DropTable(
                 name: "Users");

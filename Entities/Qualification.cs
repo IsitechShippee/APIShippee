@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShippeeAPI;
 
-public class Student_Skill
+public class Qualification
 {
-    public Int32 id_user { get; set; }
-    public User? User { get; set; }
+    public Int32 id_annoucement { get; set; }
+    public Annoucement? Annoucement { get; set; }
 
     public Int32 id_skill { get; set; }
     public Skill? Skill { get; set; }

@@ -20,22 +20,38 @@ namespace ShippeeAPI.Context
         public DbSet<Job> Jobs  { get; set; } 
         public DbSet<Annoucement_State> Annoucement_Status  { get; set; } 
         public DbSet<Annoucement> Annoucements { get; set; } 
+        public DbSet<Qualification> Qualifications { get; set; } 
 
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student_Skill>()
-                .HasKey(x => new { x.user_id, x.skill_id });
+                .HasKey(x => new { x.id_user, x.id_skill });
 
             modelBuilder.Entity<Student_Skill>()
                 .HasOne(x => x.User)
                 .WithMany(x => x.skills)
-                .HasForeignKey(x => x.user_id);
+                .HasForeignKey(x => x.id_user);
 
             modelBuilder.Entity<Student_Skill>()
                 .HasOne(x => x.Skill)
                 .WithMany(x => x.students)
-                .HasForeignKey(x => x.skill_id);
+                .HasForeignKey(x => x.id_skill);
+
+
+
+            modelBuilder.Entity<Qualification>()
+                .HasKey(x => new { x.id_annoucement, x.id_skill });
+
+            modelBuilder.Entity<Qualification>()
+                .HasOne(x => x.Annoucement)
+                .WithMany(x => x.skills)
+                .HasForeignKey(x => x.id_annoucement);
+
+            modelBuilder.Entity<Qualification>()
+                .HasOne(x => x.Skill)
+                .WithMany(x => x.annoucements)
+                .HasForeignKey(x => x.id_skill);
         }
     }
 }

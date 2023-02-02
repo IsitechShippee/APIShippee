@@ -10,7 +10,7 @@ public class Annoucement
 
     public User? User { get; set; }
     
-    [ForeignKey("user")]
+    [ForeignKey("User")]
     public Int32? id_user { get; set; }
 
     [Column(TypeName = "varchar(255)")]
@@ -39,4 +39,5 @@ public class Annoucement
     
     [ForeignKey("Job")]
     public Int32? id_job { get; set; }
+    public List<Qualification>? skills { get; set; }
 }
