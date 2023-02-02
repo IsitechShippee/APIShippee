@@ -411,6 +411,35 @@ public class AjoutDonneeBddController : ControllerBase
         return Ok("Les qualifs sont bien ajoutés");
     }
 
+    [ApiExplorerSettings(IgnoreApi=true)]
+    [HttpGet("Ajout_Favorite")]
+    public async Task<IActionResult> GetAjout_Favorite()
+    {
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Favorite.xls");
+
+        WorksheetCollection collection = wb.Worksheets;
+
+        for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
+        {
+            Worksheet worksheet = collection[worksheetIndex];
+
+            int rows = worksheet.Cells.MaxDataRow;
+            int cols = worksheet.Cells.MaxDataColumn;
+
+            for (int i = 0; i <= rows; i++)
+            {
+                Favorite favoris = new Favorite();
+                favoris.id_user = Convert.ToInt32(worksheet.Cells[i, 0].Value);
+                favoris.id_annoucement = Convert.ToInt32(worksheet.Cells[i, 1].Value);
+
+                await _context.Favorites.AddAsync(favoris);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return Ok("Les favoris sont bien ajoutés");
+    }
+
     [HttpGet("Ajouter")]
     public async Task<IActionResult> GetAjouter()
     {
@@ -426,7 +455,8 @@ public class AjoutDonneeBddController : ControllerBase
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Job",
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Status",
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Annonce",
-            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Qualification"
+            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Qualification",
+            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Favorite"
         };
 
         using (var httpClient = new HttpClient())
@@ -448,6 +478,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Supprimer")]
     public async Task<IActionResult> GetSupprimer()
     {
+        _context.Favorites.RemoveRange(_context.Favorites);
         _context.Qualifications.RemoveRange(_context.Qualifications);
         _context.Annoucements.RemoveRange(_context.Annoucements);
         _context.Annoucement_Status.RemoveRange(_context.Annoucement_Status);
