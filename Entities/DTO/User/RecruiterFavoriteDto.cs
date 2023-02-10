@@ -1,9 +1,7 @@
 namespace ShippeeAPI;
 
-public class RecruiterDto
+public class RecruiterFavoriteDto
 {
-    public bool connexion { get; set; }
-    
     public Int32 id { get; set; }
 
     public string? surname { get; set; }
@@ -16,11 +14,5 @@ public class RecruiterDto
 
     public bool? is_online { get; set; }
 
-    public Type_User? type_user {get; set; }
-
     public CompanyDto? company { get; set; }
-
-    public List<AnnoucementRecruiterDto>? annoucements {get; set; }
-    public List<AnnoucementFavoriteStudentDto>? favorites {get; set; }
-    
 }

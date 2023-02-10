@@ -215,6 +215,11 @@ public class AjoutDonneeBddController : ControllerBase
                 DateOnly test = DateOnly.Parse(dateOnly);
                 user.birthday = test;
                 user.is_conveyed = Convert.ToBoolean(worksheet.Cells[i, 14].Value);
+                if(Convert.ToInt32(worksheet.Cells[i, 15].Value) != 0)
+                {
+                    user.id_company = Convert.ToInt32(worksheet.Cells[i, 15].Value);
+                }
+                
 
 
                 await _context.Users.AddAsync(user);

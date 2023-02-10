@@ -1,10 +1,10 @@
 namespace ShippeeAPI;
 
-public class AnnoucementFavoriteRecruiterDto
+public class AnnoucementFavoriteStudentDto
 {
     public Int32 id { get; set; }
 
-    public RecruiterFavoriteDto? user { get; set; }
+    public StudentFavoriteDto? user { get; set; }
 
     public string? title { get; set; }
 
@@ -17,6 +17,4 @@ public class AnnoucementFavoriteRecruiterDto
     public string? naf_division_title { get; set; }
 
     public string? job_title { get; set; }
-
-    public Dictionary<Int32, string>? qualifications { get; set; }
 }
