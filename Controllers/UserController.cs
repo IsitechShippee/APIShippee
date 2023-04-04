@@ -125,7 +125,10 @@ public class UserController : ControllerBase
                                 Skill? skillss = _context.Skills.FirstOrDefault(s => s.id == skill.id_skill);
                                 if(skillss != null)
                                 {
-                                    skillDico.Add(skillss.id, skillss.title);
+                                    if(skillss.title != null)
+                                    {
+                                        skillDico.Add(skillss.id, skillss.title);
+                                    }
                                 }
                             }
                         }
@@ -181,7 +184,7 @@ public class UserController : ControllerBase
             foreach (var user in root2.EnumerateArray())
             {
                 var valRecup = System.Text.Json.JsonSerializer.Deserialize<User>(user);
-
+                
                 if(valRecup != null)
                 {
                     // pour les skills on créer un dictionnaire pour avoir les skills de type "id": "value"
@@ -246,7 +249,7 @@ public class UserController : ControllerBase
                                         foreach (var user2 in root3.EnumerateArray())
                                         {
                                             var valRecup2 = System.Text.Json.JsonSerializer.Deserialize<Annoucement>(user2);
-
+                                            
                                             if(valRecup2 != null)
                                             {
                                                 // pour les skills on créer un dictionnaire pour avoir les skills de type "id": "value"
@@ -259,7 +262,10 @@ public class UserController : ControllerBase
                                                         Skill? sskillss = _context.Skills.FirstOrDefault(s => s.id == skill.id_skill);
                                                         if(sskillss != null)
                                                         {
-                                                            skillDico.Add(sskillss.id, sskillss.title);
+                                                            if(sskillss.title != null)
+                                                            {
+                                                                skillDico.Add(sskillss.id, sskillss.title);
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -273,6 +279,135 @@ public class UserController : ControllerBase
                         }
                     }
                     student.favorites = favorieDico;
+                }
+            }
+
+            var recents = _context.Users
+                .Include(x => x.recents_annoucements)
+                .Where(x => x.id == personne.id)
+                .ToList();
+            
+            // format json car sinon impossible a lire les donénes
+            var options4 = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles
+            };
+
+            var json4 = System.Text.Json.JsonSerializer.Serialize(recents, options4);
+            var jsonDoc4 = JsonDocument.Parse(json4);
+            var root4 = jsonDoc4.RootElement;
+
+            foreach (var user2 in root4.EnumerateArray())
+            {
+                var valRecup2 = System.Text.Json.JsonSerializer.Deserialize<User>(user2);
+
+                if(valRecup2 != null)
+                {
+                    if(valRecup2.recents_annoucements != null)
+                    {
+                        List<Recent> test = new List<Recent>();
+
+                        foreach(Recent recentsAnnonce in valRecup2.recents_annoucements)
+                        {
+                            test.Add(recentsAnnonce);
+                        }
+
+                        List<Recent> test2 = test.OrderBy(o => o.consult_date).ToList();
+                        test2.Reverse();
+
+                        List<AnnoucementRecentStudentDto> recentAnnoucement = new List<AnnoucementRecentStudentDto>();
+
+                        int nombreRecent = 0;
+                        foreach(Recent recentsAnnonce in valRecup2.recents_annoucements)
+                        {
+                            nombreRecent++;
+                            if(nombreRecent <= 5)
+                            {
+                                
+
+                                Annoucement? annoucement = _context.Annoucements.FirstOrDefault(a => a.id == recentsAnnonce.id_annoucement);
+                                
+                                if(annoucement != null)
+                                {
+                                    AnnoucementRecentStudentDto? annoncerecent = _mapper.Map<AnnoucementRecentStudentDto>(annoucement);
+
+                                    User? recruteur = _context.Users.FirstOrDefault(u => u.id == annoucement.id_user);
+                                    RecruiterFavoriteDto? userRecruteur = _mapper.Map<RecruiterFavoriteDto>(recruteur);
+
+                                    if(recruteur != null)
+                                    {
+                                        Company? company = _context.Companies.FirstOrDefault(i => i.siren == recruteur.id_company);
+                                        CompanyDto? companyDto = _mapper.Map<CompanyDto>(company);
+                                        userRecruteur.company = companyDto;
+                                    }
+                                    annoncerecent.user = userRecruteur;
+
+                                    Annoucement_State? state = _context.Annoucement_Status.FirstOrDefault(i => i.id == annoucement.id_status);
+                                    annoncerecent.status = state;
+
+                                    Naf_Division? naf_div = _context.Naf_Divisions.FirstOrDefault(n => n.id == annoucement.id_naf_division);
+                                    if(naf_div != null)
+                                    {
+                                        annoncerecent.naf_division_title = naf_div.title;
+                                    }
+                                    
+                                    Job? job = _context.Jobs.FirstOrDefault(j => j.id == annoucement.id_job);
+                                    if(job != null)
+                                    {
+                                        annoncerecent.job_title = job.title;
+                                    }
+
+                                    
+
+                                    var qualification = _context.Annoucements
+                                        .Include(x => x.skills)
+                                            .ThenInclude(x => x.Skill)
+                                        .Where(x => x.id_user == annoucement.id_user && x.id == annoucement.id)
+                                        .ToList();
+                                    
+                                    // format json car sinon impossible a lire les donénes
+                                    var options3 = new JsonSerializerOptions
+                                    {
+                                        ReferenceHandler = ReferenceHandler.IgnoreCycles
+                                    };
+
+                                    var json3 = System.Text.Json.JsonSerializer.Serialize(qualification, options3);
+                                    var jsonDoc3 = JsonDocument.Parse(json3);
+                                    var root3 = jsonDoc3.RootElement;
+                                            
+                                    foreach (var user3 in root3.EnumerateArray())
+                                    {
+                                        var valRecup3 = System.Text.Json.JsonSerializer.Deserialize<Annoucement>(user3);
+                                        
+                                        if(valRecup3 != null)
+                                        {
+                                            // pour les skills on créer un dictionnaire pour avoir les skills de type "id": "value"
+                                            Dictionary<Int32, string> skillDico = new Dictionary<Int32, string>();
+
+                                            if(valRecup3.skills != null)
+                                            {
+                                                foreach(Qualification skill in valRecup3.skills)
+                                                {
+                                                    Skill? sskillss = _context.Skills.FirstOrDefault(s => s.id == skill.id_skill);
+                                                    if(sskillss != null)
+                                                    {
+                                                        if(sskillss.title != null)
+                                                        {
+                                                            skillDico.Add(sskillss.id, sskillss.title);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            annoncerecent.qualifications = skillDico;
+                                        }
+                                    }
+
+                                    recentAnnoucement.Add(annoncerecent);
+                                }
+                            }
+                        }
+                        student.recents_announcements = recentAnnoucement;
+                    }
                 }
             }
 

@@ -33,8 +33,10 @@ public class StudentDto
 
     public Dictionary<Int32, string>? skills { get; set; }
 
-    public List<AnnoucementStudentDto>? annoucements {get; set; }
+    public List<AnnoucementStudentDto>? annoucements { get; set; }
     
-    public List<AnnoucementFavoriteRecruiterDto>? favorites {get; set; }
+    public List<AnnoucementFavoriteRecruiterDto>? favorites { get; set; }
+
+    public List<AnnoucementRecentStudentDto>? recents_announcements { get; set; }
     
 }

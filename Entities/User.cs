@@ -57,5 +57,6 @@ public class User
     public Int32? id_company { get; set; }
 
     public List<Favorite>? favorites_annoucements { get; set; }
+    public List<Recent>? recents_annoucements { get; set; }
 
 }

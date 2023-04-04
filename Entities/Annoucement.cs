@@ -41,4 +41,5 @@ public class Annoucement
     public Int32? id_job { get; set; }
     public List<Qualification>? skills { get; set; }
     public List<Favorite>? favorites_users { get; set; }
+    public List<Recent>? recents_visits { get; set; }
 }

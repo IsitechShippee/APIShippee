@@ -219,6 +219,24 @@ namespace ShippeeAPI.Migrations
                     b.ToTable("Qualifications");
                 });
 
+            modelBuilder.Entity("ShippeeAPI.Recent", b =>
+                {
+                    b.Property<int>("id_user")
+                        .HasColumnType("int");
+
+                    b.Property<int>("id_annoucement")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("consult_date")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("id_user", "id_annoucement");
+
+                    b.HasIndex("id_annoucement");
+
+                    b.ToTable("Recents");
+                });
+
             modelBuilder.Entity("ShippeeAPI.Skill", b =>
                 {
                     b.Property<int>("id")
@@ -426,6 +444,25 @@ namespace ShippeeAPI.Migrations
                     b.Navigation("Skill");
                 });
 
+            modelBuilder.Entity("ShippeeAPI.Recent", b =>
+                {
+                    b.HasOne("ShippeeAPI.Annoucement", "Annoucement")
+                        .WithMany("recents_visits")
+                        .HasForeignKey("id_annoucement")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShippeeAPI.User", "User")
+                        .WithMany("recents_annoucements")
+                        .HasForeignKey("id_user")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Annoucement");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ShippeeAPI.Student_Skill", b =>
                 {
                     b.HasOne("ShippeeAPI.Skill", "Skill")
@@ -464,6 +501,8 @@ namespace ShippeeAPI.Migrations
                 {
                     b.Navigation("favorites_users");
 
+                    b.Navigation("recents_visits");
+
                     b.Navigation("skills");
                 });
 
@@ -477,6 +516,8 @@ namespace ShippeeAPI.Migrations
             modelBuilder.Entity("ShippeeAPI.User", b =>
                 {
                     b.Navigation("favorites_annoucements");
+
+                    b.Navigation("recents_annoucements");
 
                     b.Navigation("skills");
                 });

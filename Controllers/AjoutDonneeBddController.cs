@@ -445,6 +445,36 @@ public class AjoutDonneeBddController : ControllerBase
         return Ok("Les favoris sont bien ajoutés");
     }
 
+    [ApiExplorerSettings(IgnoreApi=true)]
+    [HttpGet("Ajout_Recent")]
+    public async Task<IActionResult> GetAjout_Recent()
+    {
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Recent.xls");
+
+        WorksheetCollection collection = wb.Worksheets;
+
+        for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
+        {
+            Worksheet worksheet = collection[worksheetIndex];
+
+            int rows = worksheet.Cells.MaxDataRow;
+            int cols = worksheet.Cells.MaxDataColumn;
+
+            for (int i = 0; i <= rows; i++)
+            {
+                Recent recent = new Recent();
+                recent.id_user = Convert.ToInt32(worksheet.Cells[i, 0].Value);
+                recent.id_annoucement = Convert.ToInt32(worksheet.Cells[i, 1].Value);
+                recent.consult_date = Convert.ToDateTime(worksheet.Cells[i, 2].Value);
+
+                await _context.Recents.AddAsync(recent);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return Ok("Les recents sont bien ajoutés");
+    }
+
     [HttpGet("Ajouter")]
     public async Task<IActionResult> GetAjouter()
     {
@@ -461,7 +491,8 @@ public class AjoutDonneeBddController : ControllerBase
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Status",
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Annonce",
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Qualification",
-            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Favorite"
+            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Favorite",
+            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Recent"
         };
 
         using (var httpClient = new HttpClient())
@@ -483,6 +514,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Supprimer")]
     public async Task<IActionResult> GetSupprimer()
     {
+        _context.Recents.RemoveRange(_context.Recents);
         _context.Favorites.RemoveRange(_context.Favorites);
         _context.Qualifications.RemoveRange(_context.Qualifications);
         _context.Annoucements.RemoveRange(_context.Annoucements);
