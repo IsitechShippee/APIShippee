@@ -22,5 +22,7 @@ public class RecruiterDto
 
     public List<AnnoucementRecruiterDto>? annoucements {get; set; }
     public List<AnnoucementFavoriteStudentDto>? favorites {get; set; }
+
+    public List<AnnoucementRecentRecruiterDto>? recents_announcements { get; set; }
     
 }
