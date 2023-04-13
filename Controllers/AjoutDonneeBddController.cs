@@ -475,6 +475,68 @@ public class AjoutDonneeBddController : ControllerBase
         return Ok("Les recents sont bien ajoutés");
     }
 
+    [ApiExplorerSettings(IgnoreApi=true)]
+    [HttpGet("Ajout_Chat_Status")]
+    public async Task<IActionResult> GetAjout_Chat_Status()
+    {
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/chat_status.xls");
+
+        WorksheetCollection collection = wb.Worksheets;
+
+        for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
+        {
+            Worksheet worksheet = collection[worksheetIndex];
+
+            int rows = worksheet.Cells.MaxDataRow;
+            int cols = worksheet.Cells.MaxDataColumn;
+
+            for (int i = 0; i <= rows; i++)
+            {
+                Chat_State chat_status = new Chat_State();
+                chat_status.id = Convert.ToInt32(worksheet.Cells[i, 0].Value);
+                chat_status.status = Convert.ToString(worksheet.Cells[i, 1].Value);
+
+                await _context.Chat_Status.AddAsync(chat_status);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return Ok("Les chat_status sont bien ajoutés");
+    }
+
+    [ApiExplorerSettings(IgnoreApi=true)]
+    [HttpGet("Ajout_Chat")]
+    public async Task<IActionResult> GetAjout_Chat()
+    {
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/chat.xls");
+
+        WorksheetCollection collection = wb.Worksheets;
+
+        for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
+        {
+            Worksheet worksheet = collection[worksheetIndex];
+
+            int rows = worksheet.Cells.MaxDataRow;
+            int cols = worksheet.Cells.MaxDataColumn;
+
+            for (int i = 0; i <= rows; i++)
+            {
+                Chat chat = new Chat();
+                chat.id = Convert.ToInt32(worksheet.Cells[i, 0].Value);
+                chat.id_sender = Convert.ToInt32(worksheet.Cells[i, 1].Value);
+                chat.id_recipient = Convert.ToInt32(worksheet.Cells[i, 2].Value);
+                chat.content = Convert.ToString(worksheet.Cells[i, 3].Value);
+                chat.send_time = Convert.ToDateTime(worksheet.Cells[i, 4].Value);
+                chat.status = Convert.ToInt32(worksheet.Cells[i, 5].Value);
+
+                await _context.Chats.AddAsync(chat);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return Ok("Les chat_status sont bien ajoutés");
+    }
+
     [HttpGet("Ajouter")]
     public async Task<IActionResult> GetAjouter()
     {
@@ -492,7 +554,9 @@ public class AjoutDonneeBddController : ControllerBase
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Annonce",
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Qualification",
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Favorite",
-            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Recent"
+            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Recent",
+            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Chat_Status",
+            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Chat"
         };
 
         using (var httpClient = new HttpClient())
@@ -514,6 +578,8 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Supprimer")]
     public async Task<IActionResult> GetSupprimer()
     {
+        _context.Chats.RemoveRange(_context.Chats);
+        _context.Chat_Status.RemoveRange(_context.Chat_Status);
         _context.Recents.RemoveRange(_context.Recents);
         _context.Favorites.RemoveRange(_context.Favorites);
         _context.Qualifications.RemoveRange(_context.Qualifications);

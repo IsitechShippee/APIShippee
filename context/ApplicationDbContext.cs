@@ -23,6 +23,8 @@ namespace ShippeeAPI.Context
         public DbSet<Qualification> Qualifications { get; set; } 
         public DbSet<Favorite> Favorites { get; set; } 
         public DbSet<Recent> Recents { get; set; } 
+        public DbSet<Chat_State> Chat_Status { get; set; } 
+        public DbSet<Chat> Chats { get; set; } 
 
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)

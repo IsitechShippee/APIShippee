@@ -78,6 +78,52 @@ namespace ShippeeAPI.Migrations
                     b.ToTable("Annoucement_Status");
                 });
 
+            modelBuilder.Entity("ShippeeAPI.Chat", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("content")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("id_recipient")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("id_sender")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("send_time")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("status")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("id_recipient");
+
+                    b.HasIndex("id_sender");
+
+                    b.HasIndex("status");
+
+                    b.ToTable("Chats");
+                });
+
+            modelBuilder.Entity("ShippeeAPI.Chat_State", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("status")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Chat_Status");
+                });
+
             modelBuilder.Entity("ShippeeAPI.Company", b =>
                 {
                     b.Property<int>("siren")
@@ -371,6 +417,27 @@ namespace ShippeeAPI.Migrations
                     b.Navigation("Type_User");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShippeeAPI.Chat", b =>
+                {
+                    b.HasOne("ShippeeAPI.User", "User2")
+                        .WithMany()
+                        .HasForeignKey("id_recipient");
+
+                    b.HasOne("ShippeeAPI.User", "User")
+                        .WithMany()
+                        .HasForeignKey("id_sender");
+
+                    b.HasOne("ShippeeAPI.Chat_State", "Chat_State")
+                        .WithMany()
+                        .HasForeignKey("status");
+
+                    b.Navigation("Chat_State");
+
+                    b.Navigation("User");
+
+                    b.Navigation("User2");
                 });
 
             modelBuilder.Entity("ShippeeAPI.Company", b =>

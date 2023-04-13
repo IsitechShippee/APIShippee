@@ -31,6 +31,21 @@ namespace ShippeeAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Chat_Status",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    status = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Chat_Status", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Effectives",
                 columns: table => new
                 {
@@ -269,6 +284,40 @@ namespace ShippeeAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Chats",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    idsender = table.Column<int>(name: "id_sender", type: "int", nullable: true),
+                    idrecipient = table.Column<int>(name: "id_recipient", type: "int", nullable: true),
+                    content = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    sendtime = table.Column<DateTime>(name: "send_time", type: "datetime(6)", nullable: true),
+                    status = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Chats", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Chats_Chat_Status_status",
+                        column: x => x.status,
+                        principalTable: "Chat_Status",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Chats_Users_id_recipient",
+                        column: x => x.idrecipient,
+                        principalTable: "Users",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Chats_Users_id_sender",
+                        column: x => x.idsender,
+                        principalTable: "Users",
+                        principalColumn: "id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Student_Skills",
                 columns: table => new
                 {
@@ -395,6 +444,21 @@ namespace ShippeeAPI.Migrations
                 column: "id_user");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Chats_id_recipient",
+                table: "Chats",
+                column: "id_recipient");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Chats_id_sender",
+                table: "Chats",
+                column: "id_sender");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Chats_status",
+                table: "Chats",
+                column: "status");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Companies_id_effective",
                 table: "Companies",
                 column: "id_effective");
@@ -449,6 +513,9 @@ namespace ShippeeAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Chats");
+
+            migrationBuilder.DropTable(
                 name: "Favorites");
 
             migrationBuilder.DropTable(
@@ -459,6 +526,9 @@ namespace ShippeeAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Student_Skills");
+
+            migrationBuilder.DropTable(
+                name: "Chat_Status");
 
             migrationBuilder.DropTable(
                 name: "Annoucements");
