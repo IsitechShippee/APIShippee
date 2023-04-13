@@ -410,6 +410,25 @@ public class UserController : ControllerBase
                 }
             }
 
+            var chats = _context.Chats
+                .Where(x => x.id_sender == personne.id)
+                .ToList();
+
+            // format json car sinon impossible a lire les donénes
+            var chat_json = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles
+            };
+
+            var json5 = System.Text.Json.JsonSerializer.Serialize(chats, chat_json);
+            var jsonDoc5 = JsonDocument.Parse(json5);
+            var all_chat = jsonDoc5.RootElement;
+
+            foreach (var chat in all_chat.EnumerateArray())
+            {
+                var valRecup2 = System.Text.Json.JsonSerializer.Deserialize<Chat>(chat);
+            }
+
             return Ok(student);
         }
         else
