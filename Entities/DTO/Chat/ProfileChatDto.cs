@@ -10,5 +10,5 @@ public class ProfileChatDto
 
     public bool? user_is_online { get; set; }
 
-    public List<ChatDto>? chat { get; set; }
+    public List<ChatDto> chat { get; set; }
 }

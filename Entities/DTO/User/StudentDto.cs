@@ -38,5 +38,7 @@ public class StudentDto
     public List<AnnoucementFavoriteRecruiterDto>? favorites { get; set; }
 
     public List<AnnoucementRecentStudentDto>? recents_announcements { get; set; }
+
+    public List<ProfileChatDto>? convs { get; set; }
     
 }
