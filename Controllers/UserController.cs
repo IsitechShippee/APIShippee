@@ -488,6 +488,16 @@ public class UserController : ControllerBase
                             thechatdto.send_time = valRecup2.send_time;
                             thechatdto.status = valRecup2.status;
 
+                            if(valRecup2.id_recipient == personne.id)
+                            {
+                                thechatdto.who = false;
+                            }
+
+                            if(valRecup2.id_sender == personne.id)
+                            {
+                                thechatdto.who = true;
+                            }
+
                             listchatdto.Add(thechatdto);
                         }
                     }
@@ -713,7 +723,103 @@ public class UserController : ControllerBase
                 
             }
 
+            var chats = _context.Chats
+                .Where(x => x.id_sender == personne.id || x.id_recipient == personne.id)
+                .ToList();
 
+            // format json car sinon impossible a lire les donénes
+            var chat_json = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles
+            };
+
+            var json5 = System.Text.Json.JsonSerializer.Serialize(chats, chat_json);
+            var jsonDoc5 = JsonDocument.Parse(json5);
+            var all_chat = jsonDoc5.RootElement;
+
+            List<Int32> lesId = new List<Int32>();
+
+            List<ProfileChatDto> lesChats = new List<ProfileChatDto>();
+
+            foreach (var chat in all_chat.EnumerateArray())
+            {
+                var valRecup2 = System.Text.Json.JsonSerializer.Deserialize<Chat>(chat);
+
+                if(valRecup2 != null)
+                {
+                    if(valRecup2.id_recipient == personne.id)
+                    {
+                        if(valRecup2.id_sender != null)
+                        {
+                            if(lesId.Contains((Int32)valRecup2.id_sender) == false)
+                            {
+                                lesId.Add((Int32)valRecup2.id_sender);
+                            }
+                        }
+                    }
+
+                    if(valRecup2.id_sender == personne.id)
+                    {
+                        if(valRecup2.id_recipient != null)
+                        {
+                            if(lesId.Contains((Int32)valRecup2.id_recipient) == false)
+                            {
+                                lesId.Add((Int32)valRecup2.id_recipient);
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach(Int32 nb in lesId)
+            {
+                ProfileChatDto profilechatdto = new ProfileChatDto();
+
+                User? pers = _context.Users.FirstOrDefault(i => i.id == nb);
+
+                if(pers != null)
+                {
+                    profilechatdto.user_firstname = pers.firstname;
+                    profilechatdto.user_surname = pers.surname;
+                    profilechatdto.user_picture = pers.picture;
+                    profilechatdto.user_is_online = pers.is_online;
+                }
+
+                List<ChatDto> listchatdto = new List<ChatDto>();
+
+                foreach (var chat in all_chat.EnumerateArray())
+                {
+                    var valRecup2 = System.Text.Json.JsonSerializer.Deserialize<Chat>(chat);
+
+                    if(valRecup2 != null)
+                    {
+                        if(valRecup2.id_recipient == nb || valRecup2.id_sender == nb)
+                        {
+                            ChatDto thechatdto = new ChatDto();
+                            thechatdto.id = valRecup2.id;
+                            thechatdto.content = valRecup2.content;
+                            thechatdto.send_time = valRecup2.send_time;
+                            thechatdto.status = valRecup2.status;
+
+                            if(valRecup2.id_recipient == personne.id)
+                            {
+                                thechatdto.who = false;
+                            }
+
+                            if(valRecup2.id_sender == personne.id)
+                            {
+                                thechatdto.who = true;
+                            }
+
+                            listchatdto.Add(thechatdto);
+                        }
+                    }
+                }
+                profilechatdto.chat = listchatdto;
+                lesChats.Add(profilechatdto);
+            }
+
+            recruiter.convs = lesChats;
             return Ok(recruiter);
         }
     }

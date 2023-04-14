@@ -9,4 +9,6 @@ public class ChatDto
     public DateTime? send_time { get; set; }
 
     public Int32? status { get; set; }
+
+    public bool? who { get; set; }
 }
