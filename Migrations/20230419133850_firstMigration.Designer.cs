@@ -11,7 +11,7 @@ using ShippeeAPI.Context;
 namespace ShippeeAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230413121015_firstMigration")]
+    [Migration("20230419133850_firstMigration")]
     partial class firstMigration
     {
         /// <inheritdoc />
@@ -286,6 +286,25 @@ namespace ShippeeAPI.Migrations
                     b.ToTable("Recents");
                 });
 
+            modelBuilder.Entity("ShippeeAPI.Recent_Search", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("id_user")
+                        .HasColumnType("int");
+
+                    b.Property<string>("text")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("id_user");
+
+                    b.ToTable("Recents_Searches");
+                });
+
             modelBuilder.Entity("ShippeeAPI.Skill", b =>
                 {
                     b.Property<int>("id")
@@ -529,6 +548,15 @@ namespace ShippeeAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Annoucement");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShippeeAPI.Recent_Search", b =>
+                {
+                    b.HasOne("ShippeeAPI.User", "User")
+                        .WithMany()
+                        .HasForeignKey("id_user");
 
                     b.Navigation("User");
                 });

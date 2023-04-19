@@ -25,6 +25,7 @@ namespace ShippeeAPI.Context
         public DbSet<Recent> Recents { get; set; } 
         public DbSet<Chat_State> Chat_Status { get; set; } 
         public DbSet<Chat> Chats { get; set; } 
+        public DbSet<Recent_Search> Recents_Searches { get; set; } 
 
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -537,6 +537,36 @@ public class AjoutDonneeBddController : ControllerBase
         return Ok("Les chat_status sont bien ajoutés");
     }
 
+    [ApiExplorerSettings(IgnoreApi=true)]
+    [HttpGet("Ajout_Recent_Search")]
+    public async Task<IActionResult> GetAjout_Recent_Search()
+    {
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/recent_search.xls");
+
+        WorksheetCollection collection = wb.Worksheets;
+
+        for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
+        {
+            Worksheet worksheet = collection[worksheetIndex];
+
+            int rows = worksheet.Cells.MaxDataRow;
+            int cols = worksheet.Cells.MaxDataColumn;
+
+            for (int i = 0; i <= rows; i++)
+            {
+                Recent_Search recent_search = new Recent_Search();
+                recent_search.id = Convert.ToInt32(worksheet.Cells[i, 0].Value);
+                recent_search.id_user = Convert.ToInt32(worksheet.Cells[i, 1].Value);
+                recent_search.text = Convert.ToString(worksheet.Cells[i, 2].Value);
+
+                await _context.Recents_Searches.AddAsync(recent_search);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return Ok("Les chat_status sont bien ajoutés");
+    }
+
     [HttpGet("Ajouter")]
     public async Task<IActionResult> GetAjouter()
     {
@@ -556,7 +586,8 @@ public class AjoutDonneeBddController : ControllerBase
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Favorite",
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Recent",
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Chat_Status",
-            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Chat"
+            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Chat",
+            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Recent_Search"
         };
 
         using (var httpClient = new HttpClient())
@@ -578,6 +609,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Supprimer")]
     public async Task<IActionResult> GetSupprimer()
     {
+        _context.Recents_Searches.RemoveRange(_context.Recents_Searches);
         _context.Chats.RemoveRange(_context.Chats);
         _context.Chat_Status.RemoveRange(_context.Chat_Status);
         _context.Recents.RemoveRange(_context.Recents);

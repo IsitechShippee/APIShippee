@@ -507,6 +507,12 @@ public class UserController : ControllerBase
             }
 
             student.convs = lesChats;
+
+            List<Recent_Search>? recent_search = await _context.Recents_Searches.Where(a => a.id_user == personne.id).ToListAsync();
+            List<Recent_SearchDto> recent_searchDto = _mapper.Map<List<Recent_SearchDto>>(recent_search);
+
+            student.recent_search = recent_searchDto;
+
             return Ok(student);
         }
         else

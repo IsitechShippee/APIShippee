@@ -40,5 +40,7 @@ public class StudentDto
     public List<AnnoucementRecentStudentDto>? recents_announcements { get; set; }
 
     public List<ProfileChatDto>? convs { get; set; }
+
+    public List<Recent_SearchDto>? recent_search { get; set; }
     
 }

@@ -318,6 +318,27 @@ namespace ShippeeAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Recents_Searches",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    iduser = table.Column<int>(name: "id_user", type: "int", nullable: true),
+                    text = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Recents_Searches", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Recents_Searches_Users_id_user",
+                        column: x => x.iduser,
+                        principalTable: "Users",
+                        principalColumn: "id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Student_Skills",
                 columns: table => new
                 {
@@ -494,6 +515,11 @@ namespace ShippeeAPI.Migrations
                 column: "id_annoucement");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Recents_Searches_id_user",
+                table: "Recents_Searches",
+                column: "id_user");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Student_Skills_id_skill",
                 table: "Student_Skills",
                 column: "id_skill");
@@ -523,6 +549,9 @@ namespace ShippeeAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Recents");
+
+            migrationBuilder.DropTable(
+                name: "Recents_Searches");
 
             migrationBuilder.DropTable(
                 name: "Student_Skills");
