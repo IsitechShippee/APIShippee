@@ -22,16 +22,29 @@ public class FavoriteController : ControllerBase
     }
 
     [HttpPost("favorite")]
-    public async Task<IActionResult> CreateFavorite(int user, int annoucement)
+    public async Task<IActionResult> CreateFavorite(FavoriteDto fav)
     {
         Favorite favorie = new Favorite();
-        favorie.id_annoucement = annoucement;
-        favorie.id_user = user;
+        favorie.id_annoucement = fav.id_annoucement;
+        favorie.id_user = fav.id_user;
 
-        await _context.Favorites.AddAsync(favorie);
-        await _context.SaveChangesAsync();
+        Favorite? exist = _context.Favorites.FirstOrDefault(i => i.id_annoucement == favorie.id_annoucement && i.id_user == favorie.id_user);
 
-        return Ok("Favorie ajouté");
+        if(exist == null)
+        {
+            await _context.Favorites.AddAsync(favorie);
+            await _context.SaveChangesAsync();
+
+            return Ok("Favorie ajouté");
+        }
+        else{
+            _context.Favorites.Remove(exist);
+            await _context.SaveChangesAsync();
+
+            return Ok("Favorie retiré");
+        }
+
+        
     }
 
 }
