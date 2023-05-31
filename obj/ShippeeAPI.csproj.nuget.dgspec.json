@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "G:\\Shippee\\ShippeeAPI\\ShippeeAPI.csproj": {}
+    "C:\\Users\\paulr\\Documents\\Isitech\\Shippee\\ShippeeAPI\\ShippeeAPI.csproj": {}
   },
   "projects": {
-    "G:\\Shippee\\ShippeeAPI\\ShippeeAPI.csproj": {
+    "C:\\Users\\paulr\\Documents\\Isitech\\Shippee\\ShippeeAPI\\ShippeeAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\Shippee\\ShippeeAPI\\ShippeeAPI.csproj",
+        "projectUniqueName": "C:\\Users\\paulr\\Documents\\Isitech\\Shippee\\ShippeeAPI\\ShippeeAPI.csproj",
         "projectName": "ShippeeAPI",
-        "projectPath": "G:\\Shippee\\ShippeeAPI\\ShippeeAPI.csproj",
+        "projectPath": "C:\\Users\\paulr\\Documents\\Isitech\\Shippee\\ShippeeAPI\\ShippeeAPI.csproj",
         "packagesPath": "C:\\Users\\paulr\\.nuget\\packages\\",
-        "outputPath": "G:\\Shippee\\ShippeeAPI\\obj\\",
+        "outputPath": "C:\\Users\\paulr\\Documents\\Isitech\\Shippee\\ShippeeAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

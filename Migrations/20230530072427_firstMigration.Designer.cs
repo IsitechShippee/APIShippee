@@ -11,7 +11,7 @@ using ShippeeAPI.Context;
 namespace ShippeeAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230419133850_firstMigration")]
+    [Migration("20230530072427_firstMigration")]
     partial class firstMigration
     {
         /// <inheritdoc />

@@ -27,5 +27,7 @@ public class RecruiterDto
     public List<AnnoucementRecentRecruiterDto>? recents_announcements { get; set; }
     
     public List<ProfileChatDto>? convs { get; set; }
+
+    public List<Recent_SearchDto>? recent_search { get; set; }
     
 }

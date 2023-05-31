@@ -328,6 +328,22 @@ public class UserController : ControllerBase
                                 {
                                     AnnoucementRecentStudentDto? annoncerecent = _mapper.Map<AnnoucementRecentStudentDto>(annoucement);
 
+                                    if(student.favorites != null)
+                                    {
+                                        foreach(AnnoucementFavoriteRecruiterDto annonecfav in student.favorites )
+                                        {
+                                            if(annoncerecent.id == annonecfav.id)
+                                            {
+                                                annoncerecent.favorite = true;
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                annoncerecent.favorite = false;
+                                            }
+                                        }
+                                    }
+
                                     User? recruteur = _context.Users.FirstOrDefault(u => u.id == annoucement.id_user);
                                     RecruiterFavoriteDto? userRecruteur = _mapper.Map<RecruiterFavoriteDto>(recruteur);
 
@@ -486,7 +502,11 @@ public class UserController : ControllerBase
                             thechatdto.id = valRecup2.id;
                             thechatdto.content = valRecup2.content;
                             thechatdto.send_time = valRecup2.send_time;
-                            thechatdto.status = valRecup2.status;
+                            Chat_State? statu = _context.Chat_Status.FirstOrDefault(i => i.id == valRecup2.status);
+                            if(statu != null)
+                            {
+                                thechatdto.status = statu.status;
+                            }
 
                             if(valRecup2.id_recipient == personne.id)
                             {
@@ -805,7 +825,11 @@ public class UserController : ControllerBase
                             thechatdto.id = valRecup2.id;
                             thechatdto.content = valRecup2.content;
                             thechatdto.send_time = valRecup2.send_time;
-                            thechatdto.status = valRecup2.status;
+                            Chat_State? statu = _context.Chat_Status.FirstOrDefault(i => i.id == valRecup2.status);
+                            if(statu != null)
+                            {
+                                thechatdto.status = statu.status;
+                            }
 
                             if(valRecup2.id_recipient == personne.id)
                             {
@@ -826,6 +850,12 @@ public class UserController : ControllerBase
             }
 
             recruiter.convs = lesChats;
+
+            List<Recent_Search>? recent_search = await _context.Recents_Searches.Where(a => a.id_user == personne.id).ToListAsync();
+            List<Recent_SearchDto> recent_searchDto = _mapper.Map<List<Recent_SearchDto>>(recent_search);
+
+            recruiter.recent_search = recent_searchDto;
+
             return Ok(recruiter);
         }
     }
