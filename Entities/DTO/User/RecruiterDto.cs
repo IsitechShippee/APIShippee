@@ -24,10 +24,14 @@ public class RecruiterDto
 
     public List<AnnoucementFavoriteStudentDto>? favorites {get; set; }
 
-    public List<AnnoucementRecentRecruiterDto>? recents_announcements { get; set; }
+    public List<AnnoucementRecentRecruiterDto>? recent_announcements { get; set; }
     
     public List<ProfileChatDto>? convs { get; set; }
 
-    public List<Recent_SearchDto>? recent_search { get; set; }
+    public List<Recent_SearchDto>? recent_searchs { get; set; }
+
+    public List<AnnoucementRecentRecruiterDto>? select_announcements { get; set; }
+
+    public List<AnnoucementRecentRecruiterDto>? loc_announcements { get; set; }
     
 }

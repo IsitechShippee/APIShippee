@@ -46,6 +46,10 @@ public class UserProfile : Profile
                 opt => opt.MapFrom(x =>  $"{x.firstname}")
             )
             .ForMember(
+                 dest => dest.cp,
+                opt => opt.MapFrom(x =>  $"{x.cp}")
+            )
+            .ForMember(
                  dest => dest.email,
                 opt => opt.MapFrom(x =>  $"{x.email}")
             )

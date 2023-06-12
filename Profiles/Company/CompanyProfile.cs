@@ -14,6 +14,18 @@ public class CompanyProfile : Profile
             .ForMember(
                  dest => dest.name,
                 opt => opt.MapFrom(x =>  $"{x.name}")
+            )
+            .ForMember(
+                dest => dest.city,
+                opt => opt.MapFrom(x => $"{x.city}")
+            )
+            .ForMember(
+                dest => dest.cp,
+                opt => opt.MapFrom(x => $"{x.cp}")
+            )
+            .ForMember(
+                dest => dest.picture,
+                opt => opt.MapFrom(x => $"{x.picture}")
             );
     }
 }

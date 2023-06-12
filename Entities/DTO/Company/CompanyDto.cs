@@ -6,4 +6,6 @@ public class CompanyDto
 
     public string? name { get; set; }
     public string? city { get; set; }
+    public string? cp { get; set; }
+    public string? picture { get; set; }
 }

@@ -37,10 +37,14 @@ public class StudentDto
     
     public List<AnnoucementFavoriteRecruiterDto>? favorites { get; set; }
 
-    public List<AnnoucementRecentStudentDto>? recents_announcements { get; set; }
+    public List<AnnoucementRecentStudentDto>? recent_announcements { get; set; }
 
     public List<ProfileChatDto>? convs { get; set; }
 
-    public List<Recent_SearchDto>? recent_search { get; set; }
+    public List<Recent_SearchDto>? recent_searchs { get; set; }
+
+    public List<AnnoucementRecentStudentDto>? select_announcements { get; set; }
+
+    public List<AnnoucementRecentStudentDto>? loc_announcements { get; set; }
     
 }

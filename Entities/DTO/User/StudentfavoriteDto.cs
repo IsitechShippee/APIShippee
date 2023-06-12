@@ -8,6 +8,8 @@ public class StudentFavoriteDto
 
     public string? firstname { get; set; }
 
+    public string? cp { get; set; }
+
     public string? email { get; set; }
 
     public string? picture { get; set; }
