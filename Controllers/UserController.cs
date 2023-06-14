@@ -214,6 +214,7 @@ public class UserController : ControllerBase
                                             userRecruteur.company = companyDto;
                                         }
                                         annoncefavorie.user = userRecruteur;
+                                        annoncefavorie.favorite = true;
 
                                         Annoucement_State? state = _context.Annoucement_Status.FirstOrDefault(i => i.id == theAnnonce.id_status);
                                         annoncefavorie.status = state;

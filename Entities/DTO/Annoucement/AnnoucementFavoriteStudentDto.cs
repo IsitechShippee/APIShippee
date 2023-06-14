@@ -4,6 +4,8 @@ public class AnnoucementFavoriteStudentDto
 {
     public Int32 id { get; set; }
 
+    public bool favorite { get; set; }
+
     public StudentFavoriteDto? user { get; set; }
 
     public string? title { get; set; }

@@ -3,6 +3,8 @@ namespace ShippeeAPI;
 public class AnnoucementFavoriteRecruiterDto
 {
     public Int32 id { get; set; }
+    
+    public bool favorite { get; set; }
 
     public RecruiterFavoriteDto? user { get; set; }
 
