@@ -21,7 +21,7 @@ public class FavoriteController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpPost("AjoutFavorite")]
+    [HttpPost("AddFavorite")]
     public async Task<IActionResult> CreateFavorite(FavoriteDto fav)
     {
         Favorite favorie = new Favorite();

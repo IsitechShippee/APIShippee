@@ -21,7 +21,7 @@ public class ChatController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpPost("ajoutChat")]
+    [HttpPost("AddChat")]
     public async Task<IActionResult> CreateMessageChat(AddChatDto sms)
     {
         string date_today = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");

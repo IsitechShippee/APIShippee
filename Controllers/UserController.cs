@@ -25,7 +25,7 @@ public class UserController : ControllerBase
 
 
 
-    [HttpGet("testconnect")]
+    [HttpGet("connect")]
     public async Task<IActionResult> GetStudentByMailPassword(string id, string psw)
     {
         // Cherche si un user existe avec l'email et le mdp renseigner
@@ -1215,6 +1215,11 @@ public class UserController : ControllerBase
             return Ok(recruiter);
         }
     }
+    // [HttpPost("AddUser")]
+    // public async Task<IActionResult> CreateFavorite(FavoriteDto fav)
+    // {
+       
+    // }
 
 
 }
