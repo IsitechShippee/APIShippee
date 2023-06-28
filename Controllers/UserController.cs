@@ -1215,11 +1215,14 @@ public class UserController : ControllerBase
             return Ok(recruiter);
         }
     }
-    // [HttpPost("AddUser")]
-    // public async Task<IActionResult> CreateFavorite(FavoriteDto fav)
-    // {
-       
-    // }
+
+    [HttpPost("AddUser")]
+    public async Task<IActionResult> CreateUser(StudentCreateDto student)
+    {
+        // User? user = _mapper.Map<User>(student);
+
+        return Ok(student.birthday);
+    }
 
 
 }

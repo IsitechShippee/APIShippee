@@ -210,10 +210,7 @@ public class AjoutDonneeBddController : ControllerBase
                 user.cv = Convert.ToString(worksheet.Cells[i, 10].Value);
                 user.cp = Convert.ToString(worksheet.Cells[i, 11].Value);
                 user.city = Convert.ToString(worksheet.Cells[i, 12].Value);
-                DateTime date = Convert.ToDateTime(worksheet.Cells[i, 13].Value);
-                string dateOnly = date.ToString("yyyy-MM-dd");
-                DateOnly test = DateOnly.Parse(dateOnly);
-                user.birthday = test;
+                user.birthday = Convert.ToDateTime(worksheet.Cells[i, 13].Value);
                 user.is_conveyed = Convert.ToBoolean(worksheet.Cells[i, 14].Value);
                 if(Convert.ToInt32(worksheet.Cells[i, 15].Value) != 0)
                 {

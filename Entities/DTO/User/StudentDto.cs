@@ -27,7 +27,7 @@ public class StudentDto
 
     public string? city { get; set; }
 
-    public DateOnly? birthday { get; set; } 
+    public DateTime? birthday { get; set; } 
 
     public bool? is_conveyed { get; set; }
 
