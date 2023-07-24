@@ -12,7 +12,11 @@ public class StudentCreateDto
 
     public string? email { get; set; }
 
+    public string? password { get; set; }
+
     public string? picture { get; set; }
+
+    public Int32? id_type_user { get; set; }
 
     public string? description { get; set; }
 
