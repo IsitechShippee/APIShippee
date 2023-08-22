@@ -144,7 +144,7 @@ public class UserController : ControllerBase
             {
                 Annoucement_State? state = _context.Annoucement_Status.FirstOrDefault(i => i.id == pseudoannonce.id_status);
                 Naf_Division? naf_div = _context.Naf_Divisions.FirstOrDefault(n => n.id == pseudoannonce.id_naf_division);
-                Job? job = _context.Jobs.FirstOrDefault(j => j.id == pseudoannonce.id_job);
+                Diplome? diplome = _context.Diplomes.FirstOrDefault(d => d.id == pseudoannonce.id_diplome);
 
                 foreach (AnnoucementStudentDto dtoAnn in annonceDto)
                 {
@@ -155,11 +155,11 @@ public class UserController : ControllerBase
                         {
                             dtoAnn.naf_division_title = naf_div.title;
                         }
-                        if (job != null)
-                        {
-                            dtoAnn.job_title = job.title;
-                        }
 
+                        if(diplome != null)
+                        {
+                            dtoAnn.diplome = diplome.diplome;
+                        }
                     }
                 }
             }
@@ -225,11 +225,11 @@ public class UserController : ControllerBase
                                             annoncefavorie.naf_division_title = naf_div.title;
                                         }
 
-                                        Job? job = _context.Jobs.FirstOrDefault(j => j.id == theAnnonce.id_job);
-                                        if (job != null)
+                                        Diplome? diplome = _context.Diplomes.FirstOrDefault(d => d.id == theAnnonce.id_diplome);
+                                        if(diplome != null)
                                         {
-                                            annoncefavorie.job_title = job.title;
-                                        }
+                                            annoncefavorie.diplome = diplome.diplome;
+                                        }   
 
                                         var qualification = _context.Annoucements
                                             .Include(x => x.skills)
@@ -366,13 +366,11 @@ public class UserController : ControllerBase
                                         annoncerecent.naf_division_title = naf_div.title;
                                     }
 
-                                    Job? job = _context.Jobs.FirstOrDefault(j => j.id == annoucement.id_job);
-                                    if (job != null)
+                                    Diplome? diplome = _context.Diplomes.FirstOrDefault(d => d.id == annoucement.id_diplome);
+                                    if(diplome != null)
                                     {
-                                        annoncerecent.job_title = job.title;
-                                    }
-
-
+                                        annoncerecent.diplome = diplome.diplome;
+                                    }  
 
                                     var qualification = _context.Annoucements
                                         .Include(x => x.skills)
@@ -545,7 +543,7 @@ public class UserController : ControllerBase
             foreach (Annoucement add in test)
             {
                 AnnoucementRecentStudentDto testt = _mapper.Map<AnnoucementRecentStudentDto>(add);
-
+                
                 Annoucement_State? state = _context.Annoucement_Status.FirstOrDefault(i => i.id == add.id_status);
                 testt.status = state;
 
@@ -555,11 +553,11 @@ public class UserController : ControllerBase
                     testt.naf_division_title = naf_div.title;
                 }
 
-                Job? job = _context.Jobs.FirstOrDefault(j => j.id == add.id_job);
-                if (job != null)
+                Diplome? diplome = _context.Diplomes.FirstOrDefault(d => d.id == add.id_diplome);
+                if(diplome != null)
                 {
-                    testt.job_title = job.title;
-                }
+                    testt.diplome = diplome.diplome;
+                }  
 
                 var qualification = _context.Annoucements
                     .Include(x => x.skills)
@@ -674,6 +672,86 @@ public class UserController : ControllerBase
                                 {
                                     if (testt.user.company.cp.Substring(0, 2) == student.cp.Substring(0, 2))
                                     {
+                                        Annoucement_State? state = _context.Annoucement_Status.FirstOrDefault(i => i.id == add.id_status);
+                                        testt.status = state;
+
+                                        Naf_Division? naf_div = _context.Naf_Divisions.FirstOrDefault(n => n.id == add.id_naf_division);
+                                        if (naf_div != null)
+                                        {
+                                            testt.naf_division_title = naf_div.title;
+                                        }
+
+                                        Diplome? diplome = _context.Diplomes.FirstOrDefault(d => d.id == add.id_diplome);
+                                        if(diplome != null)
+                                        {
+                                            testt.diplome = diplome.diplome;
+                                        } 
+
+                                        var qualification = _context.Annoucements
+                                            .Include(x => x.skills)
+                                                .ThenInclude(x => x.Skill)
+                                            .Where(x => x.id == add.id)
+                                            .ToList();
+
+                                        // format json car sinon impossible a lire les donénes
+                                        var options3 = new JsonSerializerOptions
+                                        {
+                                            ReferenceHandler = ReferenceHandler.IgnoreCycles
+                                        };
+
+                                        var json3 = System.Text.Json.JsonSerializer.Serialize(qualification, options3);
+                                        var jsonDoc3 = JsonDocument.Parse(json3);
+                                        var root3 = jsonDoc3.RootElement;
+
+                                        foreach (var user2 in root3.EnumerateArray())
+                                        {
+                                            var valRecup2 = System.Text.Json.JsonSerializer.Deserialize<Annoucement>(user2);
+
+                                            if (valRecup2 != null)
+                                            {
+                                                // pour les skills on créer un dictionnaire pour avoir les skills de type "id": "value"
+                                                Dictionary<Int32, string> skillDico = new Dictionary<Int32, string>();
+
+                                                if (valRecup2.skills != null)
+                                                {
+                                                    foreach (Qualification skill in valRecup2.skills)
+                                                    {
+                                                        Skill? sskillss = _context.Skills.FirstOrDefault(s => s.id == skill.id_skill);
+                                                        if (sskillss != null)
+                                                        {
+                                                            if (sskillss.title != null)
+                                                            {
+                                                                skillDico.Add(sskillss.id, sskillss.title);
+                                                            }
+                                                        }
+
+
+                                                    }
+                                                }
+                                                testt.qualifications = skillDico;
+
+                                                // return Ok(student.skills);
+                                                var compte = 0;
+                                                foreach (var skil in skillDico)
+                                                {
+                                                    if (student.skills != null)
+                                                    {
+                                                        foreach (var skiluser in student.skills)
+                                                        {
+                                                            if (skiluser.Value == skil.Value)
+                                                            {
+                                                                compte++;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                if (compte > 0)
+                                                {
+                                                    selectqualif.Add(testt);
+                                                }
+                                            }
+                                        }
+
                                         justLocalisation.Add(testt);
                                     }
                                 }
@@ -715,7 +793,7 @@ public class UserController : ControllerBase
             {
                 Annoucement_State? state = _context.Annoucement_Status.FirstOrDefault(i => i.id == pseudoannonce.id_status);
                 Naf_Division? naf_div = _context.Naf_Divisions.FirstOrDefault(n => n.id == pseudoannonce.id_naf_division);
-                Job? job = _context.Jobs.FirstOrDefault(j => j.id == pseudoannonce.id_job);
+                Diplome? diplome = _context.Diplomes.FirstOrDefault(d => d.id == pseudoannonce.id_diplome);
 
                 foreach (AnnoucementRecruiterDto dtoAnn in annonceDto)
                 {
@@ -726,10 +804,11 @@ public class UserController : ControllerBase
                         {
                             dtoAnn.naf_division_title = naf_div.title;
                         }
-                        if (job != null)
+                        
+                        if(diplome != null)
                         {
-                            dtoAnn.job_title = job.title;
-                        }
+                            dtoAnn.diplome = diplome.diplome;
+                        } 
 
                         var qualification = _context.Annoucements
                             .Include(x => x.skills)
@@ -820,11 +899,11 @@ public class UserController : ControllerBase
                                     annoncefavorie.naf_division_title = naf_div.title;
                                 }
 
-                                Job? job = _context.Jobs.FirstOrDefault(j => j.id == annoucement.id_job);
-                                if (job != null)
+                                Diplome? diplome = _context.Diplomes.FirstOrDefault(d => d.id == annoucement.id_diplome);
+                                if(diplome != null)
                                 {
-                                    annoncefavorie.job_title = job.title;
-                                }
+                                    annoncefavorie.diplome = diplome.diplome;
+                                } 
                             }
 
                             listefavorie.Add(annoncefavorie);
@@ -907,6 +986,12 @@ public class UserController : ControllerBase
                                     {
                                         annoncerecent.naf_division_title = naf_div.title;
                                     }
+
+                                    Diplome? diplome = _context.Diplomes.FirstOrDefault(d => d.id == annoucement.id_diplome);
+                                    if(diplome != null)
+                                    {
+                                        annoncerecent.diplome = diplome.diplome;
+                                    } 
 
                                     recentAnnoucement.Add(annoncerecent);
                                 }
@@ -1048,6 +1133,12 @@ public class UserController : ControllerBase
                     testt.naf_division_title = naf_div.title;
                 }
 
+                Diplome? diplome = _context.Diplomes.FirstOrDefault(d => d.id == add.id_diplome);
+                if(diplome != null)
+                {
+                    testt.diplome = diplome.diplome;
+                } 
+
                 var qualification = _context.Annoucements
                     .Include(x => x.skills)
                         .ThenInclude(x => x.Skill)
@@ -1070,8 +1161,6 @@ public class UserController : ControllerBase
 
                     if (valRecup2 != null)
                     {
-
-                        //     // pour les skills on créer un dictionnaire pour avoir les skills de type "id": "value"
                         Dictionary<Int32, string> skillDico = new Dictionary<Int32, string>();
 
                         if (valRecup2.skills != null)
@@ -1201,6 +1290,129 @@ public class UserController : ControllerBase
                             {
                                 if (testt.user.cp.Substring(0, 2) == recruiter.company.cp.Substring(0, 2))
                                 {
+                                    Annoucement_State? state = _context.Annoucement_Status.FirstOrDefault(i => i.id == add.id_status);
+                                    testt.status = state;
+
+                                    Naf_Division? naf_div = _context.Naf_Divisions.FirstOrDefault(n => n.id == add.id_naf_division);
+                                    if (naf_div != null)
+                                    {
+                                        testt.naf_division_title = naf_div.title;
+                                    }
+
+                                    Diplome? diplome = _context.Diplomes.FirstOrDefault(d => d.id == add.id_diplome);
+                                    if(diplome != null)
+                                    {
+                                        testt.diplome = diplome.diplome;
+                                    } 
+
+                                    var qualification = _context.Annoucements
+                                        .Include(x => x.skills)
+                                            .ThenInclude(x => x.Skill)
+                                        .Where(x => x.id_user == recruiter.id)
+                                        .ToList();
+
+                                    // format json car sinon impossible a lire les donénes
+                                    var options3 = new JsonSerializerOptions
+                                    {
+                                        ReferenceHandler = ReferenceHandler.IgnoreCycles
+                                    };
+
+                                    var json3 = System.Text.Json.JsonSerializer.Serialize(qualification, options3);
+                                    var jsonDoc3 = JsonDocument.Parse(json3);
+                                    var root3 = jsonDoc3.RootElement;
+
+                                    foreach (var user2 in root3.EnumerateArray())
+                                    {
+                                        var valRecup2 = System.Text.Json.JsonSerializer.Deserialize<Annoucement>(user2);
+
+                                        if (valRecup2 != null)
+                                        {
+                                            Dictionary<Int32, string> skillDico = new Dictionary<Int32, string>();
+
+                                            if (valRecup2.skills != null)
+                                            {
+                                                foreach (Qualification skill in valRecup2.skills)
+                                                {
+                                                    Skill? sskillss = _context.Skills.FirstOrDefault(s => s.id == skill.id_skill);
+                                                    if (sskillss != null)
+                                                    {
+                                                        if (sskillss.title != null)
+                                                        {
+                                                            skillDico.Add(sskillss.id, sskillss.title);
+                                                        }
+                                                    }
+
+
+                                                }
+                                            }
+
+
+                                            var users = _context.Users
+                                                .Include(x => x.skills)
+                                                .Where(x => x.id == add.id_user)
+                                                .ToList();
+
+                                            // format json car sinon impossible a lire les donénes
+                                            var options = new JsonSerializerOptions
+                                            {
+                                                ReferenceHandler = ReferenceHandler.IgnoreCycles
+                                            };
+
+                                            var json = System.Text.Json.JsonSerializer.Serialize(users, options);
+                                            var jsonDoc = JsonDocument.Parse(json);
+                                            var root = jsonDoc.RootElement;
+
+                                            Dictionary<Int32, string> skillDico2 = new Dictionary<Int32, string>();
+
+                                            foreach (var user in root.EnumerateArray())
+                                            {
+                                                var valRecup = System.Text.Json.JsonSerializer.Deserialize<User>(user);
+
+                                                if (valRecup != null)
+                                                {
+                                                    // pour les skills on créer un dictionnaire pour avoir les skills de type "id": "value"
+
+                                                    if (valRecup.skills != null)
+                                                    {
+                                                        foreach (Student_Skill skill in valRecup.skills)
+                                                        {
+                                                            if (skill != null)
+                                                            {
+                                                                Skill? skillss = _context.Skills.FirstOrDefault(s => s.id == skill.id_skill);
+                                                                if (skillss != null)
+                                                                {
+                                                                    if (skillss.title != null)
+                                                                    {
+                                                                        skillDico2.Add(skillss.id, skillss.title);
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            var compte = 0;
+                                            foreach (var skil in skillDico)
+                                            {
+                                                if (skillDico2 != null)
+                                                {
+                                                    foreach (var skiluser in skillDico2)
+                                                    {
+                                                        if (skiluser.Value == skil.Value)
+                                                        {
+                                                            compte++;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            if (compte > 0)
+                                            {
+                                                selectqualif.Add(testt);
+                                            }
+                                        }
+                                    }
+
                                     justLocalisation.Add(testt);
                                 }
                             }
@@ -1216,18 +1428,55 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPost("AddUser")]
-    public async Task<IActionResult> CreateUser(StudentCreateDto student)
+    [HttpPost("AddStudent")]
+    public async Task<IActionResult> CreateStudent(StudentCreateDto student)
     {
         User? user = _mapper.Map<User>(student);
 
         user.is_online = true;
+        user.id_type_user = 1;
 
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
 
-        return Ok("utilisateur bien créé");
+        return Ok("étudiant bien créé");
     }
 
+    [HttpPost("AddRecruiter")]
+    public async Task<IActionResult> CreateRecruiter(RecruiterCreateDto recruiter)
+    {
+        Company? company = _context.Companies.FirstOrDefault(s => s.siren == recruiter.id_company);
+
+        if(company != null)
+        {
+            User? user = _mapper.Map<User>(recruiter);
+            user.id_type_user = 2;
+            user.is_online = true;
+
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            return Ok("recruter bien créé");
+        }
+
+        return Ok("recruter pas bien créé");
+    }
+
+    [HttpPut("UpdatePassword")]
+    public async Task<IActionResult> UpdatePassword(string mail, string password)
+    {
+        User? personne = _context.Users.FirstOrDefault(i => i.email == mail);
+
+        if(personne != null)
+        {
+            personne.password = password;
+            _context.Users.Update(personne);
+            await _context.SaveChangesAsync();
+        }
+        
+        return Ok("password bien modifié");
+    }
+
+    
 
 }

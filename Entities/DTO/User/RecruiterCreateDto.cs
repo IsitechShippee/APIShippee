@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShippeeAPI;
 
-public class StudentCreateDto
+public class RecruiterCreateDto
 {
 
     public string? surname { get; set; }
@@ -16,17 +16,5 @@ public class StudentCreateDto
 
     public string? picture { get; set; }
 
-    public string? description { get; set; }
-
-    public string? web_site { get; set; }
-
-    public string? cv { get; set; }
-
-    public string? cp { get; set; }
-
-    public string? city { get; set; }
-
-    public DateTime? birthday { get; set; } 
-
-    public bool? is_conveyed { get; set; }
+    public Int32? id_company { get; set; }
 }

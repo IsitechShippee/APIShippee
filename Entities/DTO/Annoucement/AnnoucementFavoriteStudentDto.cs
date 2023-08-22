@@ -18,5 +18,5 @@ public class AnnoucementFavoriteStudentDto
 
     public string? naf_division_title { get; set; }
 
-    public string? job_title { get; set; }
+    public string? diplome { get; set; }
 }

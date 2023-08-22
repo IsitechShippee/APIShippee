@@ -11,8 +11,8 @@ using ShippeeAPI.Context;
 namespace ShippeeAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230530072427_firstMigration")]
-    partial class firstMigration
+    [Migration("20230727132116_firstmigration")]
+    partial class firstmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,7 +31,7 @@ namespace ShippeeAPI.Migrations
                     b.Property<string>("description")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("id_job")
+                    b.Property<int?>("id_diplome")
                         .HasColumnType("int");
 
                     b.Property<int?>("id_naf_division")
@@ -54,7 +54,7 @@ namespace ShippeeAPI.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("id_job");
+                    b.HasIndex("id_diplome");
 
                     b.HasIndex("id_naf_division");
 
@@ -172,6 +172,20 @@ namespace ShippeeAPI.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("ShippeeAPI.Diplome", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("diplome")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Diplomes");
+                });
+
             modelBuilder.Entity("ShippeeAPI.Effective", b =>
                 {
                     b.Property<int>("id")
@@ -199,25 +213,6 @@ namespace ShippeeAPI.Migrations
                     b.HasIndex("id_annoucement");
 
                     b.ToTable("Favorites");
-                });
-
-            modelBuilder.Entity("ShippeeAPI.Job", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("id_naf_section")
-                        .HasColumnType("int");
-
-                    b.Property<string>("title")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("id_naf_section");
-
-                    b.ToTable("Jobs");
                 });
 
             modelBuilder.Entity("ShippeeAPI.Naf_Division", b =>
@@ -354,8 +349,8 @@ namespace ShippeeAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateOnly?>("birthday")
-                        .HasColumnType("date");
+                    b.Property<DateTime?>("birthday")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("city")
                         .HasColumnType("varchar(255)");
@@ -410,9 +405,9 @@ namespace ShippeeAPI.Migrations
 
             modelBuilder.Entity("ShippeeAPI.Annoucement", b =>
                 {
-                    b.HasOne("ShippeeAPI.Job", "Job")
+                    b.HasOne("ShippeeAPI.Diplome", "Diplome")
                         .WithMany()
-                        .HasForeignKey("id_job");
+                        .HasForeignKey("id_diplome");
 
                     b.HasOne("ShippeeAPI.Naf_Division", "Naf_Division")
                         .WithMany()
@@ -432,7 +427,7 @@ namespace ShippeeAPI.Migrations
 
                     b.Navigation("Annoucement_State");
 
-                    b.Navigation("Job");
+                    b.Navigation("Diplome");
 
                     b.Navigation("Naf_Division");
 
@@ -494,15 +489,6 @@ namespace ShippeeAPI.Migrations
                     b.Navigation("Annoucement");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ShippeeAPI.Job", b =>
-                {
-                    b.HasOne("ShippeeAPI.Naf_Section", "Naf_Section")
-                        .WithMany()
-                        .HasForeignKey("id_naf_section");
-
-                    b.Navigation("Naf_Section");
                 });
 
             modelBuilder.Entity("ShippeeAPI.Naf_Division", b =>

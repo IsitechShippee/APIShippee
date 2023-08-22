@@ -286,36 +286,6 @@ public class AjoutDonneeBddController : ControllerBase
     }
 
     [ApiExplorerSettings(IgnoreApi=true)]
-    [HttpGet("Ajout_Job")]
-    public async Task<IActionResult> GetAjout_Job()
-    {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Job.xls");
-
-        WorksheetCollection collection = wb.Worksheets;
-
-        for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
-        {
-            Worksheet worksheet = collection[worksheetIndex];
-
-            int rows = worksheet.Cells.MaxDataRow;
-            int cols = worksheet.Cells.MaxDataColumn;
-
-            for (int i = 0; i <= rows; i++)
-            {
-                Job job = new Job();
-                job.id = Convert.ToInt32(worksheet.Cells[i, 0].Value);
-                job.title = Convert.ToString(worksheet.Cells[i, 1].Value);
-                job.id_naf_section = Convert.ToInt32(worksheet.Cells[i, 2].Value);
-
-                await _context.Jobs.AddAsync(job);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        return Ok("Les jobs sont bien ajoutés");
-    }
-
-    [ApiExplorerSettings(IgnoreApi=true)]
     [HttpGet("Ajout_Status")]
     public async Task<IActionResult> GetAjout_Status()
     {
@@ -345,6 +315,35 @@ public class AjoutDonneeBddController : ControllerBase
     }
 
     [ApiExplorerSettings(IgnoreApi=true)]
+    [HttpGet("Ajout_Diplome")]
+    public async Task<IActionResult> GetAjout_Diplome()
+    {
+        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Diplome.xls");
+
+        WorksheetCollection collection = wb.Worksheets;
+
+        for (int worksheetIndex = 0; worksheetIndex < collection.Count; worksheetIndex++)
+        {
+            Worksheet worksheet = collection[worksheetIndex];
+
+            int rows = worksheet.Cells.MaxDataRow;
+            int cols = worksheet.Cells.MaxDataColumn;
+
+            for (int i = 0; i <= rows; i++)
+            {
+                Diplome diplome = new Diplome();
+                diplome.id = Convert.ToInt32(worksheet.Cells[i, 0].Value);
+                diplome.diplome = Convert.ToString(worksheet.Cells[i, 1].Value);
+
+                await _context.Diplomes.AddAsync(diplome);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return Ok("Les diplômes sont bien ajoutés");
+    }
+
+    [ApiExplorerSettings(IgnoreApi=true)]
     [HttpGet("Ajout_Annonce")]
     public async Task<IActionResult> GetAjout_Annonce()
     {
@@ -371,10 +370,7 @@ public class AjoutDonneeBddController : ControllerBase
                 annonce.id_status = Convert.ToInt32(worksheet.Cells[i, 6].Value);
                 annonce.id_naf_division = Convert.ToInt32(worksheet.Cells[i, 7].Value);
 
-                if(Convert.ToInt32(worksheet.Cells[i, 8].Value) != 0)
-                {
-                    annonce.id_job = Convert.ToInt32(worksheet.Cells[i, 8].Value);
-                }
+                annonce.id_diplome = Convert.ToInt32(worksheet.Cells[i, 8].Value);
 
                 await _context.Annoucements.AddAsync(annonce);
                 await _context.SaveChangesAsync();
@@ -576,8 +572,8 @@ public class AjoutDonneeBddController : ControllerBase
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_User",
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Skill",
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Student_Skill",
-            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Job",
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Status",
+            "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Diplome",
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Annonce",
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Qualification",
             "https://localhost:7061/api/AjoutDonneeBdd/Ajout_Favorite",
@@ -613,8 +609,8 @@ public class AjoutDonneeBddController : ControllerBase
         _context.Favorites.RemoveRange(_context.Favorites);
         _context.Qualifications.RemoveRange(_context.Qualifications);
         _context.Annoucements.RemoveRange(_context.Annoucements);
+        _context.Diplomes.RemoveRange(_context.Diplomes);
         _context.Annoucement_Status.RemoveRange(_context.Annoucement_Status);
-        _context.Jobs.RemoveRange(_context.Jobs);
         _context.Student_Skills.RemoveRange(_context.Student_Skills);
         _context.Skills.RemoveRange(_context.Skills);
         _context.Users.RemoveRange(_context.Users);

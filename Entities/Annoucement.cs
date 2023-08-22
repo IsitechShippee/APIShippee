@@ -35,10 +35,11 @@ public class Annoucement
     [ForeignKey("Naf_Division")]
     public Int32? id_naf_division { get; set; }
 
-    public Job? Job { get; set; }
+    public Diplome? Diplome { get; set; }
+
+    [ForeignKey("Diplome")]
+    public Int32? id_diplome { get; set; }
     
-    [ForeignKey("Job")]
-    public Int32? id_job { get; set; }
     public List<Qualification>? skills { get; set; }
     public List<Favorite>? favorites_users { get; set; }
     public List<Recent>? recents_visits { get; set; }

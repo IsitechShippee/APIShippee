@@ -17,4 +17,6 @@ public class AnnoucementRecentRecruiterDto
     public Annoucement_State? status { get; set; }
 
     public string? naf_division_title { get; set; }
+
+    public string? diplome { get; set; }
 }

@@ -14,7 +14,7 @@ public class AnnoucementRecruiterDto
 
     public string? naf_division_title { get; set; }
 
-    public string? job_title { get; set; }
+    public string? diplome { get; set; }
 
     public Dictionary<Int32, string>? qualifications { get; set; }
 }

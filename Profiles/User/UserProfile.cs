@@ -83,10 +83,6 @@ public class UserProfile : Profile
                  dest => dest.picture,
                 opt => opt.MapFrom(x =>  $"{x.picture}")
             )
-             .ForMember(
-                 dest => dest.id_type_user,
-                opt => opt.MapFrom(x =>  $"{x.id_type_user}")
-            )
             .ForMember(
                  dest => dest.description,
                 opt => opt.MapFrom(x =>  $"{x.description}")
@@ -114,6 +110,33 @@ public class UserProfile : Profile
             .ForMember(
                  dest => dest.is_conveyed,
                 opt => opt.MapFrom(x =>  $"{x.is_conveyed}")
+            );
+
+        
+        CreateMap<RecruiterCreateDto, User>()
+            .ForMember(
+                 dest => dest.surname,
+                opt => opt.MapFrom(x =>  $"{x.surname}")
+            )
+            .ForMember(
+                 dest => dest.firstname,
+                opt => opt.MapFrom(x =>  $"{x.firstname}")
+            )
+            .ForMember(
+                 dest => dest.email,
+                opt => opt.MapFrom(x =>  $"{x.email}")
+            )
+            .ForMember(
+                 dest => dest.password,
+                opt => opt.MapFrom(x =>  $"{x.password}")
+            )
+            .ForMember(
+                 dest => dest.picture,
+                opt => opt.MapFrom(x =>  $"{x.picture}")
+            )
+            .ForMember(
+                 dest => dest.id_company,
+                opt => opt.MapFrom(x =>  $"{x.id_company}")
             );
     }
 }
