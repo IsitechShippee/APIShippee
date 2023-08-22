@@ -51,10 +51,10 @@ public class CompanyController : ControllerBase
 
         if(personne != null)
         {
-            return Ok("Cette compagnie existe ");
+            return Ok(1);
         }
         
-        return Ok("Cette compagnie n'existe pas");
+        return Ok(0);
     }
 
 }
