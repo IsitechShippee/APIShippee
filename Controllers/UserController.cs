@@ -1431,15 +1431,23 @@ public class UserController : ControllerBase
     [HttpPost("AddStudent")]
     public async Task<IActionResult> CreateStudent(StudentCreateDto student)
     {
-        User? user = _mapper.Map<User>(student);
+        User? userexist = _context.Users.FirstOrDefault(s => s.email == student.email);
 
-        user.is_online = true;
-        user.id_type_user = 1;
+        if(userexist == null)
+        {
+            User? user = _mapper.Map<User>(student);
 
-        await _context.Users.AddAsync(user);
-        await _context.SaveChangesAsync();
+            user.is_online = true;
+            user.id_type_user = 1;
 
-        return Ok("étudiant bien créé");
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            return Ok("creer");
+        }
+
+        return Ok("existe");
+        
     }
 
     [HttpPost("AddRecruiter")]
