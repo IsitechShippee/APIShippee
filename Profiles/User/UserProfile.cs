@@ -80,20 +80,12 @@ public class UserProfile : Profile
                 opt => opt.MapFrom(x =>  $"{x.password}")
             )
             .ForMember(
-                 dest => dest.picture,
-                opt => opt.MapFrom(x =>  $"{x.picture}")
-            )
-            .ForMember(
                  dest => dest.description,
                 opt => opt.MapFrom(x =>  $"{x.description}")
             )
             .ForMember(
                  dest => dest.web_site,
                 opt => opt.MapFrom(x =>  $"{x.web_site}")
-            )
-            .ForMember(
-                 dest => dest.cv,
-                opt => opt.MapFrom(x =>  $"{x.cv}")
             )
             .ForMember(
                  dest => dest.cp,

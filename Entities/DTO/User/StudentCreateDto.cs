@@ -14,13 +14,9 @@ public class StudentCreateDto
 
     public string? password { get; set; }
 
-    public string? picture { get; set; }
-
     public string? description { get; set; }
 
     public string? web_site { get; set; }
-
-    public string? cv { get; set; }
 
     public string? cp { get; set; }
 

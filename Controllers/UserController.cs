@@ -25,7 +25,7 @@ public class UserController : ControllerBase
 
 
 
-    [HttpGet("connect")]
+    [HttpPost("connect")]
     public async Task<IActionResult> GetStudentByMailPassword(string id, string psw)
     {
         // Cherche si un user existe avec l'email et le mdp renseigner
@@ -482,6 +482,7 @@ public class UserController : ControllerBase
 
                 if (pers != null)
                 {
+                    profilechatdto.id_people = pers.id;
                     profilechatdto.user_firstname = pers.firstname;
                     profilechatdto.user_surname = pers.surname;
                     profilechatdto.user_picture = pers.picture;
@@ -1061,6 +1062,7 @@ public class UserController : ControllerBase
 
                 if (pers != null)
                 {
+                    profilechatdto.id_people = pers.id;
                     profilechatdto.user_firstname = pers.firstname;
                     profilechatdto.user_surname = pers.surname;
                     profilechatdto.user_picture = pers.picture;
@@ -1429,7 +1431,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("AddStudent")]
-    public async Task<IActionResult> CreateStudent(StudentCreateDto student)
+    public async Task<IActionResult> CreateStudent([FromForm] FileModel cv_picture, [FromForm] StudentCreateDto student)
     {
         User? userexist = _context.Users.FirstOrDefault(s => s.email == student.email);
 
@@ -1441,6 +1443,35 @@ public class UserController : ControllerBase
             user.id_type_user = 1;
 
             await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            User? usertest = _context.Users.FirstOrDefault(s => s.email == student.email);
+
+            string folderPath = @"../ShippeeAPI/document/" + usertest.id;
+            if(!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string name_cv = "cv_" + usertest.firstname + "_" + usertest.surname + ".pdf";
+            string name_picture = "picture_" + usertest.firstname + "_" + usertest.surname + ".png";
+
+            string path = Path.Combine(folderPath, name_cv);
+            using(Stream stream = new FileStream(path, FileMode.Create))
+            {
+                cv_picture.file_cv.CopyTo(stream);
+            }
+
+            string path2 = Path.Combine(folderPath, name_picture);
+            using(Stream stream2 = new FileStream(path2, FileMode.Create))
+            {
+                cv_picture.file_picture.CopyTo(stream2);
+            }
+
+            usertest.cv = name_cv;
+            usertest.picture = name_picture;
+
+            _context.Users.Update(usertest);
             await _context.SaveChangesAsync();
 
             return Ok("creer");
