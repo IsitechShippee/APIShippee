@@ -26,19 +26,19 @@ public class UserController : ControllerBase
 
 
     [HttpPost("connect")]
-    public async Task<IActionResult> GetStudentByMailPassword(string id, string psw)
+    public async Task<IActionResult> GetStudentByMailPassword([FromBody] UserConnectDto userco)
     {
         // Cherche si un user existe avec l'email et le mdp renseigner
-        User? personne = _context.Users.FirstOrDefault(i => i.email == id && i.password == psw);
+        User? personne = _context.Users.FirstOrDefault(i => i.email == userco.id && i.password == userco.password);
 
         // si il n'y a aucun user 
         if (personne == null)
         {
             // on regarde si il existe un user avec le mail
-            User? testemail = _context.Users.FirstOrDefault(i => i.email == id);
+            User? testemail = _context.Users.FirstOrDefault(i => i.email == userco.id);
 
             // on regarde si il existe un user avec le mail
-            User? testpassword = _context.Users.FirstOrDefault(i => i.password == psw);
+            User? testpassword = _context.Users.FirstOrDefault(i => i.password == userco.password);
 
             Dictionary<string, string> erreur = new Dictionary<string, string>();
             erreur.Add("connexion", "false");
