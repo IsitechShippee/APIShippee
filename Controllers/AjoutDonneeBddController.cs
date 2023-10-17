@@ -25,7 +25,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Naf_Section")]
     public async Task<IActionResult> GetAjout_Naf_Section()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Naf_Section.xls");
+        Workbook wb = new Workbook("./DonneeImporter/Naf_Section.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -56,7 +56,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Naf_Division")]
     public async Task<IActionResult> GetAjout_Naf_Division()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Naf_Division.xls");
+        Workbook wb = new Workbook("./DonneeImporter/Naf_Division.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -86,7 +86,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Effective")]
     public async Task<IActionResult> GetAjout_Effective()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Effectif.xls");
+        Workbook wb = new Workbook("./DonneeImporter/Effectif.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -115,7 +115,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Company")]
     public async Task<IActionResult> GetAjout_Company()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Company.xls");
+        Workbook wb = new Workbook("./DonneeImporter/Company.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -153,7 +153,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Type_User")]
     public async Task<IActionResult> GetAjout_Type_User()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Type_User.xls");
+        Workbook wb = new Workbook("./DonneeImporter/Type_User.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -183,7 +183,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_User")]
     public async Task<IActionResult> GetAjout_User()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/User.xls");
+        Workbook wb = new Workbook("./DonneeImporter/User.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -231,7 +231,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Skill")]
     public async Task<IActionResult> GetAjout_Skill()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Skill.xls");
+        Workbook wb = new Workbook("./DonneeImporter/Skill.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -260,7 +260,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Student_Skill")]
     public async Task<IActionResult> GetAjout_Student_Skill()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/StudentSkills.xls");
+        Workbook wb = new Workbook("./DonneeImporter/StudentSkills.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -289,7 +289,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Status")]
     public async Task<IActionResult> GetAjout_Status()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Status.xls");
+        Workbook wb = new Workbook("./DonneeImporter/Status.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -318,7 +318,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Diplome")]
     public async Task<IActionResult> GetAjout_Diplome()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Diplome.xls");
+        Workbook wb = new Workbook("./DonneeImporter/Diplome.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -347,7 +347,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Annonce")]
     public async Task<IActionResult> GetAjout_Annonce()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Annonce.xls");
+        Workbook wb = new Workbook("./DonneeImporter/Annonce.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -384,7 +384,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Qualification")]
     public async Task<IActionResult> GetAjout_Qualification()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Qualification.xls");
+        Workbook wb = new Workbook("./DonneeImporter/Qualification.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -413,7 +413,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Favorite")]
     public async Task<IActionResult> GetAjout_Favorite()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Favorite.xls");
+        Workbook wb = new Workbook("./DonneeImporter/Favorite.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -442,7 +442,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Recent")]
     public async Task<IActionResult> GetAjout_Recent()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/Recent.xls");
+        Workbook wb = new Workbook("./DonneeImporter/Recent.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -472,7 +472,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Chat_Status")]
     public async Task<IActionResult> GetAjout_Chat_Status()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/chat_status.xls");
+        Workbook wb = new Workbook("./DonneeImporter/chat_status.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -501,7 +501,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Chat")]
     public async Task<IActionResult> GetAjout_Chat()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/chat.xls");
+        Workbook wb = new Workbook("./DonneeImporter/chat.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 
@@ -534,7 +534,7 @@ public class AjoutDonneeBddController : ControllerBase
     [HttpGet("Ajout_Recent_Search")]
     public async Task<IActionResult> GetAjout_Recent_Search()
     {
-        Workbook wb = new Workbook("../ShippeeAPI/DonneeImporter/recent_search.xls");
+        Workbook wb = new Workbook("./DonneeImporter/recent_search.xls");
 
         WorksheetCollection collection = wb.Worksheets;
 

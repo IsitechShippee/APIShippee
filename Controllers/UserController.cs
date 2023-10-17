@@ -1447,7 +1447,7 @@ public class UserController : ControllerBase
 
             User? usertest = _context.Users.FirstOrDefault(s => s.email == student.email);
 
-            string folderPath = @"../ShippeeAPI/document/" + usertest.id;
+            string folderPath = @"./document/" + usertest.id;
             if(!Directory.Exists(folderPath))
             {
                 Directory.CreateDirectory(folderPath);
