@@ -77,7 +77,6 @@ public class UserController : ControllerBase
             student.surname = personne.surname;
             student.firstname = personne.firstname;
             student.email = personne.email;
-            student.picture = personne.picture;
             student.is_online = personne.is_online;
 
             Type_User? type_user = _context.Type_Users.FirstOrDefault(i => i.id == personne.id_type_user);
@@ -85,11 +84,16 @@ public class UserController : ControllerBase
 
             student.description = personne.description;
             student.web_site = personne.web_site;
-            student.cv = personne.cv;
             student.cp = personne.cp;
             student.city = personne.city;
             student.birthday = personne.birthday;
             student.is_conveyed = personne.is_conveyed;
+
+            string folderPath = @"./document/" + usertest.id;
+            if(Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
 
             // on recup donnée de la relation many_to_many selon l'id de l'user trouvé
             var users = _context.Users

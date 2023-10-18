@@ -21,7 +21,7 @@ public class StudentDto
 
     public string? web_site { get; set; }
 
-    public string? cv { get; set; }
+    public IFormFile? cv { get; set; }
 
     public string? cp { get; set; }
 
