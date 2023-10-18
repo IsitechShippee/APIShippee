@@ -7,4 +7,5 @@ public class FavoriteDto
 {
     public int id_annoucement { get; set; }
     public int id_user { get; set; }
+    public UserConnectDto user { get; set; }
 }

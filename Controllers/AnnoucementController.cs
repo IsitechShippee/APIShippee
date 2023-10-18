@@ -155,6 +155,12 @@ public class AnnoucementController : ControllerBase
     [HttpPut("UpdateStatusAnnouncement")]
     public async Task<IActionResult> UpdateStatus(StatusAnnouncementDto stateAnnouncement)
     {
+        User? personne = _context.Users.FirstOrDefault(i => i.email == stateAnnouncement.user.id && i.password == stateAnnouncement.user.password);
+
+        if(personne == null)
+        {
+            return Ok("user existe pas");
+        }
 
         Annoucement? exist = _context.Annoucements.FirstOrDefault(i => i.id == stateAnnouncement.id_annoucement);
         

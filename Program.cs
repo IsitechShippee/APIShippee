@@ -39,12 +39,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+if(!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseHttpsRedirection();
 
 app.UseCors("MyPolicy");
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGet("/", () => "hello world !");
 
 app.Run();
 

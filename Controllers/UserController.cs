@@ -1511,13 +1511,13 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("UpdatePassword")]
-    public async Task<IActionResult> UpdatePassword(string mail, string password)
+    public async Task<IActionResult> UpdatePassword([FromBody] UpdatePswDto userco)
     {
-        User? personne = _context.Users.FirstOrDefault(i => i.email == mail);
+        User? personne = _context.Users.FirstOrDefault(i => i.email == userco.id && i.password == userco.password);
 
         if(personne != null)
         {
-            personne.password = password;
+            personne.password = userco.new_password;
             _context.Users.Update(personne);
             await _context.SaveChangesAsync();
         }

@@ -24,6 +24,13 @@ public class FavoriteController : ControllerBase
     [HttpPost("AddFavorite")]
     public async Task<IActionResult> CreateFavorite(FavoriteDto fav)
     {
+        User? personne = _context.Users.FirstOrDefault(i => i.email == fav.user.id && i.password == fav.user.password);
+
+        if(personne == null)
+        {
+            return Ok("user existe pas");
+        }
+
         Favorite favorie = new Favorite();
         favorie.id_annoucement = fav.id_annoucement;
         favorie.id_user = fav.id_user;

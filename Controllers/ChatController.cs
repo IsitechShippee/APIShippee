@@ -24,6 +24,13 @@ public class ChatController : ControllerBase
     [HttpPost("AddChat")]
     public async Task<IActionResult> CreateMessageChat(AddChatDto sms)
     {
+        User? personne = _context.Users.FirstOrDefault(i => i.email == sms.user.id && i.password == sms.user.password);
+
+        if(personne == null)
+        {
+            return Ok("user existe pas");
+        }
+
         string date_today = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         Chat chat = new Chat();
         chat.id_sender = sms.id_sender;
@@ -41,6 +48,13 @@ public class ChatController : ControllerBase
     [HttpPut("UpdateStatusChat")]
     public async Task<IActionResult> UpdateStatusChat(UpdateChatDto up_chat)
     {
+        User? personne = _context.Users.FirstOrDefault(i => i.email == up_chat.user.id && i.password == up_chat.user.password);
+
+        if(personne == null)
+        {
+            return Ok("user existe pas");
+        }
+
         List<Chat>? chat = await _context.Chats.Where(i => i.id_sender == up_chat.id_sender && i.id_recipient == up_chat.id_user && i.status == 1).ToListAsync();
 
         if(chat == null) return Ok("pas de chat existant entre ces deux personnes");
