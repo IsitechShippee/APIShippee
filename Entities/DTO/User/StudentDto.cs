@@ -11,7 +11,7 @@ public class StudentDto
 
     public string? email { get; set; }
 
-    public string? picture { get; set; }
+    public List<string>? picture { get; set; }
 
     public bool? is_online { get; set; }
 
@@ -21,7 +21,7 @@ public class StudentDto
 
     public string? web_site { get; set; }
 
-    public IFormFile? cv { get; set; }
+    public List<string>? cv { get; set; }
 
     public string? cp { get; set; }
 

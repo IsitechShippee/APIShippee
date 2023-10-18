@@ -89,10 +89,15 @@ public class UserController : ControllerBase
             student.birthday = personne.birthday;
             student.is_conveyed = personne.is_conveyed;
 
-            string folderPath = @"./document/" + usertest.id;
+            string folderPath = @"./document/" + personne.id;
             if(Directory.Exists(folderPath))
             {
-                Directory.CreateDirectory(folderPath);
+                DirectoryInfo di = new(folderPath);
+                FileInfo[] files = di.GetFiles("*.pdf");
+                student.cv = files.Select(file => file.FullName).ToList();
+
+                FileInfo[] filess = di.GetFiles("*.png");
+                student.picture = filess.Select(file => file.FullName).ToList();
             }
 
             // on recup donnée de la relation many_to_many selon l'id de l'user trouvé
