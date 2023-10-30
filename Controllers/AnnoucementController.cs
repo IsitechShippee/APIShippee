@@ -176,28 +176,28 @@ public class AnnoucementController : ControllerBase
     }
 
     [HttpPost("AddAnnouncement")]
-    public async Task<IActionResult> AddAnnouncement(int user_id, string title, string description, int type_id, int division_naf_id, int diplome_id, int[] skills)
+    public async Task<IActionResult> AddAnnouncement(AddAnnouncementDto add_announcement)
     {
         Annoucement newannouncement = new Annoucement();
-        newannouncement.id_user = user_id;
-        newannouncement.title = title;
-        newannouncement.description = description;
+        newannouncement.id_user = add_announcement.user_id;
+        newannouncement.title = add_announcement.title;
+        newannouncement.description = add_announcement.description;
         newannouncement.publish_date = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-        newannouncement.id_type = type_id;
+        newannouncement.id_type = add_announcement.type_id;
         newannouncement.id_status = 2;
-        newannouncement.id_naf_division = division_naf_id;
-        newannouncement.id_diplome = diplome_id;
+        newannouncement.id_naf_division = add_announcement.division_naf_id;
+        newannouncement.id_diplome = add_announcement.diplome_id;
 
         await _context.Annoucements.AddAsync(newannouncement);
         await _context.SaveChangesAsync();
 
-        Annoucement? exist = _context.Annoucements.FirstOrDefault(i => i.id_user == user_id && i.title == title && i.description == description && i.id_type == type_id && i.id_naf_division == division_naf_id && i.id_diplome == diplome_id);
+        Annoucement? exist = _context.Annoucements.FirstOrDefault(i => i.id_user == add_announcement.user_id && i.title == add_announcement.title && i.description == add_announcement.description && i.id_type == add_announcement.type_id && i.id_naf_division == add_announcement.division_naf_id && i.id_diplome == add_announcement.diplome_id);
 
-        for(int i = 0; i < skills.Length; i++)
+        for(int i = 0; i < add_announcement.skills.Length; i++)
         {
             Qualification newqualif = new Qualification();
             newqualif.id_annoucement = exist.id;
-            newqualif.id_skill = skills[i];
+            newqualif.id_skill = add_announcement.skills[i];
 
             await _context.Qualifications.AddAsync(newqualif);
             await _context.SaveChangesAsync();
