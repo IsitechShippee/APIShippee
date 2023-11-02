@@ -429,8 +429,15 @@ public class UserController : ControllerBase
                             }
                         }
 
-                        student.recent_announcements = recentAnnoucement;
-
+                        if(recentAnnoucement.Count > 5)
+                        {
+                            AnnoucementRecentStudentDto[] newx = recentAnnoucement.Take(5).ToArray();
+                            student.recent_announcements = new List<AnnoucementRecentStudentDto>(newx);
+                        }
+                        else
+                        {
+                            student.recent_announcements = recentAnnoucement;
+                        }
                     }
                 }
             }
@@ -553,7 +560,16 @@ public class UserController : ControllerBase
             foreach (Annoucement add in test)
             {
                 AnnoucementRecentStudentDto testt = _mapper.Map<AnnoucementRecentStudentDto>(add);
+
+                foreach(AnnoucementFavoriteRecruiterDto and in student.favorites)
+                {
+                    if(add.id == and.id)
+                    {
+                        testt.favorite = true;
+                    }
+                }
                 
+
                 Annoucement_State? state = _context.Annoucement_Status.FirstOrDefault(i => i.id == add.id_status);
                 testt.status = state;
 
@@ -662,7 +678,15 @@ public class UserController : ControllerBase
                 }
             }
 
-            student.select_announcements = selectlocqualif;
+            if(selectlocqualif.Count > 5)
+            {
+                AnnoucementRecentStudentDto[] newx = selectlocqualif.Take(5).ToArray();
+                student.select_announcements = new List<AnnoucementRecentStudentDto>(newx);
+            }
+            else
+            {
+                student.select_announcements = selectlocqualif;
+            }
 
             List<AnnoucementRecentStudentDto> justLocalisation = new List<AnnoucementRecentStudentDto>();
 
@@ -682,6 +706,14 @@ public class UserController : ControllerBase
                                 {
                                     if (testt.user.company.cp.Substring(0, 2) == student.cp.Substring(0, 2))
                                     {
+                                        foreach(AnnoucementFavoriteRecruiterDto and in student.favorites)
+                                        {
+                                            if(add.id == and.id)
+                                            {
+                                                testt.favorite = true;
+                                            }
+                                        }
+
                                         Annoucement_State? state = _context.Annoucement_Status.FirstOrDefault(i => i.id == add.id_status);
                                         testt.status = state;
 
@@ -773,7 +805,15 @@ public class UserController : ControllerBase
                 }
             }
 
-            student.loc_announcements = justLocalisation;
+            if(justLocalisation.Count > 5)
+            {
+                AnnoucementRecentStudentDto[] newx = justLocalisation.Take(5).ToArray();
+                student.loc_announcements = new List<AnnoucementRecentStudentDto>(newx);
+            }
+            else
+            {
+                student.loc_announcements = justLocalisation;
+            }
 
             return Ok(student);
         }
