@@ -4,6 +4,8 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Aspose.Cells.Charts;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ShippeeAPI.Controllers;
 
@@ -147,7 +149,94 @@ public class AnnoucementController : ControllerBase
             final_annonce_filter = annonce_filter_diplome;
         }
 
-        List<Annoucement> testt = _mapper.Map<List<Annoucement>>(final_annonce_filter);
+        List<string> nafadd = new List<string>();
+        List<string> diplo = new List<string>();
+        List<Dictionary<Int32, string>> quali = new List<Dictionary<Int32, string>>();
+
+        foreach(Annoucement addf in final_annonce_filter)
+        {
+            Naf_Division nafd = _context.Naf_Divisions.FirstOrDefault(n => n.id == addf.id_naf_division);
+
+            if(nafd != null)
+            {
+                nafadd.Add(nafd.title);
+            }
+
+            Diplome dip = _context.Diplomes.FirstOrDefault(n => n.id == addf.id_diplome);
+
+            if(dip != null)
+            {
+                diplo.Add(dip.diplome);
+            }
+
+
+            var qualification = _context.Annoucements
+                .Include(x => x.skills)
+                    .ThenInclude(x => x.Skill)
+                .Where(x => x.id == addf.id)
+                .ToList();
+
+            // format json car sinon impossible a lire les donénes
+            var options3 = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles
+            };
+
+            var json3 = System.Text.Json.JsonSerializer.Serialize(qualification, options3);
+            var jsonDoc3 = JsonDocument.Parse(json3);
+            var root3 = jsonDoc3.RootElement;
+
+            foreach (var user2 in root3.EnumerateArray())
+            {
+                var valRecup2 = System.Text.Json.JsonSerializer.Deserialize<Annoucement>(user2);
+
+                if (valRecup2 != null)
+                {
+                    // pour les skills on créer un dictionnaire pour avoir les skills de type "id": "value"
+                    Dictionary<Int32, string> skillDico = new Dictionary<Int32, string>();
+
+                    if (valRecup2.skills != null)
+                    {
+                        foreach (Qualification skill in valRecup2.skills)
+                        {
+                            Skill? sskillss = _context.Skills.FirstOrDefault(s => s.id == skill.id_skill);
+                            if (sskillss != null)
+                            {
+                                if (sskillss.title != null)
+                                {
+                                    skillDico.Add(sskillss.id, sskillss.title);
+                                }
+                            }
+                        }
+                    }
+
+                    quali.Add(skillDico);
+                }
+            }
+
+
+
+        }
+
+        List<AnnoucementRecentStudentDto> testt = _mapper.Map<List<AnnoucementRecentStudentDto>>(final_annonce_filter);
+
+        var index = 0;
+        foreach(AnnoucementRecentStudentDto aaaa in testt)
+        {
+            aaaa.naf_division_title = nafadd[index];
+            aaaa.diplome = diplo[index];
+            aaaa.qualifications = quali[index];
+            index++;
+        }
+
+
+
+
+        
+
+
+
+
 
         return Ok(testt);
     }
