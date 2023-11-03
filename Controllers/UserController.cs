@@ -429,9 +429,9 @@ public class UserController : ControllerBase
                             }
                         }
 
-                        if(recentAnnoucement.Count > 5)
+                        if(recentAnnoucement.Count > 4)
                         {
-                            AnnoucementRecentStudentDto[] newx = recentAnnoucement.Take(5).ToArray();
+                            AnnoucementRecentStudentDto[] newx = recentAnnoucement.Take(4).ToArray();
                             student.recent_announcements = new List<AnnoucementRecentStudentDto>(newx);
                         }
                         else
@@ -678,9 +678,9 @@ public class UserController : ControllerBase
                 }
             }
 
-            if(selectlocqualif.Count > 5)
+            if(selectlocqualif.Count > 4)
             {
-                AnnoucementRecentStudentDto[] newx = selectlocqualif.Take(5).ToArray();
+                AnnoucementRecentStudentDto[] newx = selectlocqualif.Take(4).ToArray();
                 student.select_announcements = new List<AnnoucementRecentStudentDto>(newx);
             }
             else
@@ -805,9 +805,9 @@ public class UserController : ControllerBase
                 }
             }
 
-            if(justLocalisation.Count > 5)
+            if(justLocalisation.Count > 4)
             {
-                AnnoucementRecentStudentDto[] newx = justLocalisation.Take(5).ToArray();
+                AnnoucementRecentStudentDto[] newx = justLocalisation.Take(4).ToArray();
                 student.loc_announcements = new List<AnnoucementRecentStudentDto>(newx);
             }
             else
@@ -940,6 +940,8 @@ public class UserController : ControllerBase
                                 StudentFavoriteDto? userdto = _mapper.Map<StudentFavoriteDto>(user);
                                 annoncefavorie.user = userdto;
 
+                                annoncefavorie.favorite = true;
+
                                 Annoucement_State? state = _context.Annoucement_Status.FirstOrDefault(i => i.id == annoucement.id_status);
                                 annoncefavorie.status = state;
 
@@ -1047,7 +1049,16 @@ public class UserController : ControllerBase
                                 }
                             }
                         }
-                        recruiter.recent_announcements = recentAnnoucement;
+
+                        if(recentAnnoucement.Count > 4)
+                        {
+                            AnnoucementRecentRecruiterDto[] newx = recentAnnoucement.Take(4).ToArray();
+                            recruiter.recent_announcements = new List<AnnoucementRecentRecruiterDto>(newx);
+                        }
+                        else
+                        {
+                            recruiter.recent_announcements = recentAnnoucement;
+                        }
                     }
 
                 }
@@ -1174,6 +1185,16 @@ public class UserController : ControllerBase
             foreach (Annoucement add in test)
             {
                 AnnoucementRecentRecruiterDto testt = _mapper.Map<AnnoucementRecentRecruiterDto>(add);
+                
+                foreach(AnnoucementFavoriteStudentDto and in recruiter.favorites)
+                {
+                    if(add.id == and.id)
+                    {
+                        testt.favorite = true;
+                    }
+                }
+
+                
 
                 Annoucement_State? state = _context.Annoucement_Status.FirstOrDefault(i => i.id == add.id_status);
                 testt.status = state;
@@ -1323,7 +1344,15 @@ public class UserController : ControllerBase
                 }
             }
 
-            recruiter.select_announcements = selectlocqualif;
+            if(selectlocqualif.Count > 4)
+            {
+                AnnoucementRecentRecruiterDto[] newx = selectlocqualif.Take(4).ToArray();
+                recruiter.select_announcements = new List<AnnoucementRecentRecruiterDto>(newx);
+            }
+            else
+            {
+                recruiter.select_announcements = selectlocqualif;
+            }
 
             List<AnnoucementRecentRecruiterDto> justLocalisation = new List<AnnoucementRecentRecruiterDto>();
 
@@ -1341,6 +1370,14 @@ public class UserController : ControllerBase
                             {
                                 if (testt.user.cp.Substring(0, 2) == recruiter.company.cp.Substring(0, 2))
                                 {
+                                    foreach(AnnoucementFavoriteStudentDto and in recruiter.favorites)
+                                    {
+                                        if(add.id == and.id)
+                                        {
+                                            testt.favorite = true;
+                                        }
+                                    }
+
                                     Annoucement_State? state = _context.Annoucement_Status.FirstOrDefault(i => i.id == add.id_status);
                                     testt.status = state;
 
@@ -1473,7 +1510,15 @@ public class UserController : ControllerBase
 
             }
 
-            recruiter.loc_announcements = justLocalisation;
+            if(justLocalisation.Count > 4)
+            {
+                AnnoucementRecentRecruiterDto[] newx = justLocalisation.Take(4).ToArray();
+                recruiter.loc_announcements = new List<AnnoucementRecentRecruiterDto>(newx);
+            }
+            else
+            {
+                recruiter.loc_announcements = justLocalisation;
+            }
 
             return Ok(recruiter);
         }
