@@ -24,13 +24,6 @@ public class ChatController : ControllerBase
     [HttpPost("AddChat")]
     public async Task<IActionResult> CreateMessageChat(AddChatDto sms)
     {
-        User? personne = _context.Users.FirstOrDefault(i => i.email == sms.user.id && i.password == sms.user.password);
-
-        if(personne == null)
-        {
-            return Ok("user existe pas");
-        }
-
         string date_today = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         Chat chat = new Chat();
         chat.id_sender = sms.id_sender;
